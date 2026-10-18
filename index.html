@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="format-detection" content="telephone=no">
+<title>不知道有多远 · 纪念红军长征胜利 90 周年</title>
+<meta name="description" content="他们出发时，不知道要走两万五千里。一部纪念长征胜利 90 周年的滚动长卷。">
+<style>
+/* ==========================================================================
+   《不知道有多远》· 样式
+   三色原则：米白 #F5F1E8（纸）/ 墨黑 #1F1D1A（正文）/ 朱红 #A32D2D（重音）
+   朱红全篇只有四处抬音量：02 湘江、04 命名、09 俯瞰、12 落点
+
+   插画另有一支色：铅灰 #3A3733（见 index.html 的 sprite 注释）
+   —— 03/05/06 三屏插画一律只用铅灰，不用墨黑；
+      只有 06 草地那块实色用 #1F1D1A，是全篇唯一一处纯黑。
+   ========================================================================== */
+
+:root{
+  --paper:#F5F1E8;
+  --ink:#1F1D1A;
+  --red:#A32D2D;
+  --ink-60:rgba(31,29,26,.60);
+  --ink-40:rgba(31,29,26,.40);
+  --ink-16:rgba(31,29,26,.16);
+  --ink-08:rgba(31,29,26,.08);
+  --serif:"Songti SC","SimSun","STSong","Noto Serif CJK SC","Source Han Serif SC",Georgia,serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html{scroll-behavior:auto}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.9;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* 纸纹：极淡的噪点，用 CSS 渐变模拟，不引外部图片 */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+  opacity:.035;
+  background-image:
+    repeating-linear-gradient(0deg,transparent 0 2px,rgba(31,29,26,.5) 2px 3px),
+    repeating-linear-gradient(90deg,transparent 0 3px,rgba(31,29,26,.35) 3px 4px);
+  mix-blend-mode:multiply;
+}
+
+/* ------------------------------------------------------------------ 分幕 */
+.scene{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:14vh 30px;
+  overflow:hidden;
+}
+
+/* 内容最大宽度，居中 */
+.wrap{width:100%;max-width:560px;margin:0 auto;position:relative;z-index:2}
+
+/* 进入动画：只做 opacity 与 transform */
+.reveal{
+  opacity:0;
+  transform:translateY(26px);
+  transition:opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.10s}
+.reveal.d2{transition-delay:.22s}
+.reveal.d3{transition-delay:.34s}
+.reveal.d4{transition-delay:.46s}
+.reveal.d5{transition-delay:.58s}
+.reveal.d6{transition-delay:.70s}
+.reveal.d7{transition-delay:.82s}
+.reveal.d8{transition-delay:.94s}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+}
+
+/* ------------------------------------------------------------------ 文字 */
+.big{
+  font-family:var(--serif);
+  font-size:clamp(46px,15vw,92px);
+  font-weight:700;
+  line-height:1.05;
+  letter-spacing:.02em;
+}
+
+.num{
+  font-family:var(--serif);
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.01em;
+}
+
+.lead{
+  font-family:var(--serif);
+  font-size:clamp(19px,5.4vw,25px);
+  line-height:2.05;
+  letter-spacing:.03em;
+}
+
+.body{
+  font-size:clamp(15px,4.1vw,17px);
+  line-height:2.15;
+  color:var(--ink-60);
+  letter-spacing:.03em;
+}
+
+.small{font-size:12.5px;line-height:1.95;color:var(--ink-40);letter-spacing:.04em}
+.serif-s{font-family:var(--serif);font-size:14px;color:var(--ink-40);letter-spacing:.08em}
+
+.red{color:var(--red)}
+
+.rule{width:38px;height:1px;background:var(--ink);opacity:.28;margin:26px 0}
+
+.gap-s{height:14px}
+.gap-m{height:30px}
+.gap-l{height:56px}
+
+/* 屏序标签：右上极小字 */
+.tag{
+  position:absolute;top:5vh;right:26px;
+  font-size:11px;letter-spacing:.22em;color:var(--ink-40);
+  font-family:var(--serif);z-index:3;
+}
+
+/* ------------------------------------------------------------------ 版画 */
+.cut{display:block;width:100%;height:auto;overflow:visible}
+.cut svg{display:block;width:100%;height:auto}
+
+/* 共享 sprite：只放 defs（脚印），本身不占版面 */
+.sprite{position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden}
+
+/* 图注：图只给气氛，文字负责说清它是什么 —— 抽象图形一律配一行图注 */
+.cutcap{
+  margin-top:13px;text-align:center;
+  font-family:var(--serif);font-size:11.5px;
+  letter-spacing:.2em;color:var(--ink-40);
+}
+
+/* 图例：朱红圆点 + 原文引句，出处单列一行 */
+.legend{margin-top:24px}
+.legend p{
+  position:relative;padding-left:17px;
+  font-family:var(--serif);font-size:clamp(14px,4vw,16px);
+  line-height:2.05;letter-spacing:.03em;color:var(--ink);
+  margin-bottom:8px;
+}
+.legend p i{
+  position:absolute;left:0;top:.92em;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--red);
+}
+.legend p.src{
+  margin-top:14px;padding-left:0;
+  font-family:var(--sans);font-size:12px;
+  line-height:1.9;letter-spacing:.04em;color:var(--ink-40);
+}
+
+/* --------------------------------------------------------- 00 序：一个数字 */
+#s0 .big{font-size:clamp(64px,20vw,132px);letter-spacing:.04em}
+#s0 .unit{
+  display:block;margin-top:8px;
+  font-family:var(--serif);font-size:15px;letter-spacing:.5em;color:var(--ink-40);
+}
+
+/* ------------------------------------------- 02 湘江 / 08 吴起：数字坠落 */
+.fallWrap{position:relative;height:1.24em;overflow:hidden}
+.fallA,.fallB{
+  position:absolute;left:0;
+  font-family:var(--serif);
+  font-size:clamp(50px,16vw,100px);
+  font-weight:700;line-height:1.22;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+}
+.fallA{top:0;transition:transform 4.8s cubic-bezier(.5,0,.85,.3) .55s, opacity 3.4s ease .55s}
+.fallB{top:-1.26em;opacity:0;transition:transform 4.8s cubic-bezier(.2,.68,.24,1) .55s, opacity .9s ease .55s}
+#s2.in .fallA{transform:translateY(1.4em);opacity:0}
+#s2.in .fallB{transform:translateY(1.26em);opacity:1}
+
+/* ★ 人数递减链（2026-10-18）：把散在前文的三个人数收拢成一条看得见的链。
+   手法是「字号逐级变小」，而不是画图表 ——
+     ⚠️ 没有轴、没有网格、没有填充色块，所以它是一张关系图，不是数据看板；
+     ⚠️ 也不做减法（见 index.html 里的说明），递减由读者自己看出来。
+   字号三档是刻意拉开的：第一档压得住，最后一档必须显得「轻、少、稀薄」。
+   ⚠️ 三行用原文的概数写法（8.6 万 / 3 万余 / 7,000 余），不写成 86,000 / 30,000 ——
+      把概数写成精确数，会让后面遵义屏的 3.7 万余 看起来像人数涨回去了。 */
+.troops{padding:6px 0}
+.troop{
+  display:flex;align-items:baseline;gap:16px;
+  padding:13px 0;
+  border-bottom:1px solid var(--ink-08);
+  opacity:0;transform:translateY(12px);
+  transition:opacity .9s ease,transform .9s ease;
+}
+#s8.in .troop{opacity:1;transform:none}
+#s8.in .troop:nth-child(1){transition-delay:.45s}
+#s8.in .troop:nth-child(2){transition-delay:1.15s}
+#s8.in .troop:nth-child(3){transition-delay:1.85s}
+.troop .t1{font-size:clamp(38px,11.5vw,58px)}
+.troop .t2{font-size:clamp(28px,8.2vw,42px)}
+.troop .t3{font-size:clamp(21px,6vw,31px)}
+.troop i{
+  font-style:normal;font-size:12px;color:var(--ink-40);
+  letter-spacing:.05em;white-space:nowrap;
+}
+@media (prefers-reduced-motion:reduce){
+  .troop{transition:none;opacity:1;transform:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fallA,.fallB{transition:none}
+  .fallA{opacity:.18}
+  .fallB{top:0;opacity:1}
+}
+
+/* ---------------------------------------------------- 04 布告：逐行显影 */
+.bugao{
+  font-family:var(--serif);
+  font-size:clamp(17px,4.8vw,22px);
+  line-height:2.3;letter-spacing:.06em;
+  border-left:2px solid var(--ink-16);
+  padding-left:18px;
+}
+.bugao .ln{opacity:0;transition:opacity .5s ease}
+#s4.in .bugao .ln{opacity:1}
+#s4.in .bugao .ln:nth-child(1){transition-delay:1.0s}
+#s4.in .bugao .ln:nth-child(2){transition-delay:1.4s}
+#s4.in .bugao .ln:nth-child(3){transition-delay:1.8s}
+.bugao .key{color:var(--red);font-weight:700}
+
+/* ------------------------------------------------------- 07 报纸：标题显影 */
+/* ⚠️ .paper 是上图那块朱红的「放大版」：图中一小块红 → 这里变成真实引文。
+   左侧那道朱红竖线就是这层对应关系，别改成别的颜色。 */
+.paper{
+  background:#EDE7D9;
+  border:1px solid var(--ink-16);
+  border-left:2px solid var(--red);
+  padding:22px 20px;
+  font-family:var(--serif);
+  font-size:15px;line-height:2.1;letter-spacing:.05em;
+}
+.paper .ttl{
+  font-size:17px;font-weight:700;letter-spacing:.08em;
+  opacity:0;transition:opacity 1.6s ease 1.0s;
+}
+#s7.in .paper .ttl{opacity:1}
+.paper .ln{color:var(--ink-40);font-size:13px;opacity:0;transition:opacity 1s ease}
+#s7.in .paper .ln{opacity:1}
+#s7.in .paper .ln:nth-of-type(1){transition-delay:2.0s}
+#s7.in .paper .ln:nth-of-type(2){transition-delay:2.4s}
+
+/* -------------------------------------------------------- 09 俯瞰：里程长卷 */
+#s9{background:var(--ink);color:var(--paper)}
+#s9 .body,#s9 .lead,#s9 .small,#s9 .serif-s{color:rgba(245,241,232,.72)}
+#s9 .rule{background:rgba(245,241,232,.3)}
+#s9 .tag{color:rgba(245,241,232,.5)}
+#s9 .red{color:#E0685F}
+
+/* 里程长卷
+   ⚠️ 2026-10-17 两次返工，两次都是同一个病：**位置/间距被一个会变的量绑住**。
+      第一次：绝对定位 + top 百分比 → 容器高度一缩，节点叠死。
+      第二次：允许标签折行 → 标签占两行，压到下一个节点。
+      现方案把两件事都钉死：
+      · 纵向：flex 列 + space-between 等分，高度设下限 → 间距永远够
+      · 横向：标签等宽字体、一行排完、按 ch 预留净空 → 永不折行、永不裁切
+      ⚠️ 标签净空是「22px 圆点偏移 + 14ch 文本 + 8px 余量」算出来的固定值。
+         唯一会变的量是 vw，所以标签字号必须随 vw 走（clamp 里的 2.7vw），
+         否则宽屏会浪费空间、窄屏会算少。 */
+.scrollWrap{
+  position:relative;
+  --label-w:172px;                     /* 22 + 15.4ch×9px(@12.5px) + 8px 余量 = 169 ≈ 172 */
+  height:max(440px,min(58vh,460px));   /* 11 节点 × 40px 行距 = 400px 是底线 */
+  margin:26px min(190px,46vw) 26px 0;  /* 右侧留出标签空间，防裁切 */
+  border-left:1px solid rgba(245,241,232,.22);
+  overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:6px 0;
+}
+.scrollLine{
+  position:absolute;left:0;top:0;width:1px;
+  height:var(--h,100%);
+  background:linear-gradient(180deg,rgba(224,104,95,.9),rgba(245,241,232,.35));
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 2.6s cubic-bezier(.25,.6,.3,1) .4s;
+}
+#s9.in .scrollLine{transform:scaleY(1)}
+.scrollMark{
+  position:relative;left:-4px;flex:0 0 auto;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--paper);
+  opacity:0;transition:opacity .6s ease;
+}
+#s9.in .scrollMark{opacity:.85}
+.scrollMark b{
+  position:absolute;left:18px;top:-7px;
+  /* ⚠️ 这里必须「一行排完、永不折行」，理由（2026-10-17 第三次返工）：
+     节点间距是按「一个节点占一行」等分的。标签一旦折成两行，
+     第二行就会压到下一个节点上 —— 上一版我改成 white-space:normal
+     想把长标签折下去，结果 1934.10/于都 自己拆成两行，又和下一个撞了。
+     → 正确做法不是"允许折行"，而是"保证放得下"：
+       用等宽字体让每个半角字 = 1ch（数字宽度可精确预算），
+       字号按 vw + 固定上限夹逼，最短屏也留足余量。
+       最长标签 `1935.05　金沙江` = 7 半角 + 1 全角空格 + 3 全角 ≈ 15.4ch（实测）。 */
+  white-space:nowrap;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:clamp(10.5px,2.7vw,12.5px);
+  line-height:1.5;
+  color:rgba(245,241,232,.78);letter-spacing:.02em;
+}
+
+.stat{
+  display:flex;align-items:baseline;gap:12px;
+  padding:11px 0;border-bottom:1px solid rgba(245,241,232,.14);
+}
+.stat .k{font-family:var(--serif);font-size:clamp(21px,6vw,30px);font-weight:700;flex:0 0 auto}
+.stat .v{font-size:13.5px;line-height:1.85;color:rgba(245,241,232,.66);letter-spacing:.03em}
+
+/* -------------------------------------------------- 真实计时（传承机关） */
+/* 12 屏落点前的并列对照：你读到这里 vs 他们走完这段路。
+   ⚠️ 两条约束决定了这里的写法：
+     ① 只并列、不换算 —— 所以做成两行字典式对照，绝不出现第三个数字；
+     ② tabular-nums 等宽数字 —— 数字落定时不抖。
+   ⚠️ 视觉刻意朴素：这是全篇最后一击，但绝不能长出数据看板的样子
+     （上下两条细线已经是底线，别再加轴、网格、色块）。 */
+.clock{
+  border-top:1px solid var(--ink-16);
+  border-bottom:1px solid var(--ink-16);
+  padding:20px 0 18px;
+}
+.clockRow{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:18px;padding:8px 0;
+}
+.clockLab{font-size:13px;color:var(--ink-60);letter-spacing:.05em}
+.clockTime{
+  font-family:var(--serif);font-size:clamp(17px,5vw,21px);font-weight:700;
+  color:var(--ink);letter-spacing:.03em;font-variant-numeric:tabular-nums;
+}
+.clockNote{
+  margin-top:16px;font-size:13px;line-height:2;
+  color:var(--ink-60);letter-spacing:.03em;
+}
+
+/* ------------------------------------------------------------ 10 同岁输入 */
+.ageBox{display:flex;align-items:flex-end;gap:14px;margin:30px 0 22px}
+.ageInput{
+  width:132px;
+  background:transparent;border:none;
+  border-bottom:2px solid var(--ink);
+  font-family:var(--serif);font-size:clamp(40px,12vw,60px);font-weight:700;
+  color:var(--ink);text-align:center;
+  padding:0 0 6px;
+  -moz-appearance:textfield;
+}
+.ageInput::-webkit-outer-spin-button,
+.ageInput::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ageInput:focus{outline:none;border-bottom-color:var(--red)}
+.ageUnit{font-family:var(--serif);font-size:19px;color:var(--ink-40);padding-bottom:12px}
+
+.ageOut{
+  border-left:2px solid var(--ink-16);
+  padding-left:18px;
+  min-height:140px;
+}
+.ageOut .ln{
+  font-family:var(--serif);font-size:clamp(16px,4.5vw,20px);
+  line-height:2.1;letter-spacing:.03em;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.ageOut .ln.show{opacity:1;transform:none}
+.ageOut .who{
+  margin-top:14px;font-size:13px;color:var(--ink-40);
+  line-height:1.9;letter-spacing:.03em;
+}
+
+.rankRow{
+  display:flex;justify-content:space-between;
+  font-size:13px;color:var(--ink-40);
+  padding:6px 0;border-bottom:1px dashed var(--ink-08);
+  letter-spacing:.04em;
+}
+.rankRow span:last-child{font-family:var(--serif);color:var(--ink-60)}
+
+/* -------------------------------------------------------- 11 没有留下脸 */
+/* ⚠️ 列间距 10px 是算过的：8×56 + 7×10 + 分隔留白 18 = 536 ≤ .wrap 的 560px，
+   否则第 8 个（徐特立）会在桌面端被挤到第二行，分隔虚线就飘在行首了。 */
+.silRow{
+  display:flex;flex-wrap:wrap;gap:22px 10px;
+  justify-content:flex-start;margin:34px 0 26px;
+}
+.sil{width:56px;text-align:center;opacity:0;transform:translateY(12px);
+  transition:opacity .8s ease,transform .8s ease}
+#s11.in .sil{opacity:1;transform:none}
+#s11.in .sil:nth-child(1){transition-delay:.1s}
+#s11.in .sil:nth-child(2){transition-delay:.2s}
+#s11.in .sil:nth-child(3){transition-delay:.3s}
+#s11.in .sil:nth-child(4){transition-delay:.4s}
+#s11.in .sil:nth-child(5){transition-delay:.5s}
+#s11.in .sil:nth-child(6){transition-delay:.6s}
+#s11.in .sil:nth-child(7){transition-delay:.7s}
+#s11.in .sil:nth-child(8){transition-delay:.8s}
+#s11.in .sil:nth-child(n+9){transition-delay:.9s}
+.sil svg{display:block;width:100%;height:auto;opacity:.82}
+.sil b{
+  display:block;margin-top:7px;
+  font-family:var(--serif);font-size:14px;font-weight:400;color:var(--ink-40);
+  letter-spacing:.04em;
+}
+/* 唯一留下姓名的那一位：左侧留白 + 一道铅笔虚线，提示它和前面七个不是同一类。
+   不加轴、不加网格、不加刻度 —— 本作不做图表，只用「明度 + 留白」区分。 */
+.sil.one{position:relative;margin-left:18px}
+.sil.one::before{
+  content:'';position:absolute;left:-10px;top:8px;bottom:40px;
+  border-left:1px dashed rgba(58,55,51,.3);
+}
+.sil.one b{color:var(--ink)}
+.sil.one b:last-child{color:var(--red)}
+@media(max-width:420px){
+  .sil.one{margin-left:12px}
+  .sil.one::before{left:-7px}
+}
+
+/* ------------------------------------------------------------ 12 落点 */
+#s12{padding-top:18vh;padding-bottom:18vh}
+#s12 .lead{font-size:clamp(20px,5.8vw,27px);line-height:2.25}
+#s12 .punch{
+  font-family:var(--serif);
+  font-size:clamp(21px,6vw,29px);
+  font-weight:700;line-height:1.85;letter-spacing:.03em;
+  color:var(--red);
+}
+
+/* ---------------------------------------------------------- 尾声：资料 */
+#refs{background:#EFEADF;padding:14vh 30px 10vh}
+#refs .refItem{
+  display:flex;gap:12px;padding:7px 0;
+  font-size:12.5px;line-height:1.85;color:var(--ink-40);
+  border-bottom:1px solid var(--ink-08);letter-spacing:.02em;
+}
+#refs .refItem i{flex:0 0 auto;font-style:normal;color:var(--ink-16);font-family:var(--serif)}
+#refs .refItem span{color:var(--ink-40)}
+#refs h4{
+  font-family:var(--serif);font-size:14px;font-weight:700;
+  margin:34px 0 12px;letter-spacing:.1em;color:var(--ink-60);
+}
+#refs .note{
+  margin-top:30px;padding-top:22px;border-top:1px solid var(--ink-16);
+  font-size:13px;line-height:2;color:var(--ink-60);letter-spacing:.03em;
+}
+
+/* --------------------------------------------------- 右侧刻度（不给看终点） */
+.gauge{
+  position:fixed;right:16px;top:50%;transform:translateY(-50%);
+  z-index:50;display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;transition:opacity .8s ease;pointer-events:none;
+}
+.gauge.on{opacity:1}
+.gaugeTrack{
+  position:relative;width:1px;height:34vh;
+  background:var(--ink-16);
+}
+.gaugeFill{
+  position:absolute;top:0;left:0;width:1px;height:0;
+  background:var(--ink);
+}
+.gaugeNum{
+  font-family:var(--serif);font-size:11px;letter-spacing:.08em;
+  color:var(--ink-40);font-variant-numeric:tabular-nums;
+}
+/* 完整那句放在刻度上方 —— ⚠️ 不能挂在刻度线下面。
+   刻度线居中于 .gauge，而 .gauge 距屏幕右缘只有 16px；
+   挂在下方时，长句以线为中心左右各伸约 94px，右端直接被屏幕切掉。
+   放到上方、并与数字左对齐，才有足够横向空间。 */
+.gaugeHintTop{
+  align-self:flex-start;
+  font-size:9.5px;letter-spacing:.12em;color:var(--ink-40);
+  white-space:nowrap;line-height:1.6;
+}
+.gaugeHint{
+  position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);
+  font-size:9.5px;letter-spacing:.06em;color:var(--ink-40);white-space:nowrap;
+}
+.gauge.dark .gaugeTrack{background:rgba(245,241,232,.22)}
+.gauge.dark .gaugeFill{background:var(--paper)}
+.gauge.dark .gaugeNum,
+.gauge.dark .gaugeHint,
+.gauge.dark .gaugeHintTop{color:rgba(245,241,232,.55)}
+
+/* ------------------------------------------------------------------ 开场 */
+.intro{
+  position:fixed;inset:0;z-index:200;
+  background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .9s ease,visibility .9s;
+}
+.intro.gone{opacity:0;visibility:hidden}
+.intro h1{
+  font-family:var(--serif);font-size:clamp(28px,9vw,44px);
+  font-weight:700;letter-spacing:.14em;text-align:center;
+}
+.intro p{margin-top:18px;font-size:13px;letter-spacing:.2em;color:var(--ink-40);text-align:center}
+.intro .go{
+  margin-top:52px;font-size:12px;letter-spacing:.24em;color:var(--ink-40);
+  animation:breathe 2.6s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ------------------------------------------------------------------ 页脚 */
+.sign{
+  text-align:center;padding:0 30px 8vh;
+  font-family:var(--serif);font-size:12.5px;letter-spacing:.24em;color:var(--ink-40);
+}
+
+/* ------------------------------------------------------------ 小屏适配 */
+@media (max-height:700px){
+  .scene{padding:11vh 26px}
+  .gaugeTrack{height:28vh}
+  .scrollWrap{height:max(440px,min(50vh,380px));--label-w:150px}
+}
+@media (max-width:360px){
+  .scene{padding:12vh 22px}
+  .gauge{right:10px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- 共享 sprite。
+     ⚠️ 全篇的场景插画【不出现人】——
+     任意数目的人物会暗示并不存在的含义，而正面站姿的剪影也不像在行走。
+     只在雪山一屏用脚印交代"有人走过、且只上不下"。
+
+     画法：铅笔素描。四支笔 ——
+       ① 多重重描：同一条线画两遍，第二遍微偏移 + 低透明度
+       ② 排线调子：#hatchSlope 斜面明暗 / #hatchWater 水面横线
+       ③ 断续笔痕：stroke-dasharray 模拟铅笔不连贯
+       ④ 晕染：脚印外围一层极淡的擦痕
+     ⚠️ 不用 feTurbulence 滤镜：虽最像铅笔毛边，但微信 X5 老内核可能糊或不渲染。
+
+     配色分层：
+       --ink    #1F1D1A  正文墨黑
+       --pencil #3A3733  铅笔（三屏插画专用，比正文浅一层）
+       朱红      #A32D2D  点睛，在一片铅灰里更跳
+     ⚠️ 06 草地那块 #1F1D1A 实色是全篇唯一一处纯黑，其余只用铅笔灰。 -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false"><defs>
+  <g id="foot" fill="#3A3733">
+    <ellipse cx="0" cy="0" rx="16" ry="7.6" opacity=".17"></ellipse>
+    <ellipse cx="0" cy="0" rx="10" ry="4.9"></ellipse>
+    <ellipse cx=".6" cy="-1.4" rx="6.2" ry="2.5" opacity=".42"></ellipse>
+  </g>
+  <pattern id="hatchSlope" width="17" height="17" patternUnits="userSpaceOnUse" patternTransform="rotate(42)">
+    <path d="M0 0 V17" stroke="#3A3733" stroke-width="1.7" opacity=".42"></path>
+  </pattern>
+  <pattern id="hatchWater" width="21" height="21" patternUnits="userSpaceOnUse">
+    <path d="M0 10.5 H21" stroke="#3A3733" stroke-width="1.7" opacity=".26"></path>
+  </pattern>
+</defs></svg>
+
+<!-- 开场 -->
+<div class="intro" id="intro">
+  <h1>不知道有多远</h1>
+  <p>纪念红军长征胜利 90 周年</p>
+  <div class="go">向 下 滚 动</div>
+</div>
+
+<!-- 右侧刻度：只显示已走了多少，不显示总长、不显示还剩多少、不显示终点在哪 -->
+<div class="gauge" id="gauge">
+  <div class="gaugeHintTop">已走 · 不知道还有多远</div>
+  <div class="gaugeNum" id="gaugeNum">0</div>
+  <div class="gaugeTrack"><div class="gaugeFill" id="gaugeFill"></div>
+    <div class="gaugeHint">已走</div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════ 00 序：一个数字 -->
+<section class="scene" id="s0">
+  <div class="wrap">
+    <div class="big num reveal">25,000<span class="unit">里</span></div>
+    <div class="gap-m"></div>
+    <p class="lead reveal d2">这是红一方面军长征的行程。</p>
+    <p class="lead reveal d4">你大概听过这个数字很多次。</p>
+    <p class="lead reveal d6">但你不一定知道它有多长。</p>
+    <div class="gap-m"></div>
+    <p class="small reveal d8">注："二万五千里长征"专指红一方面军。<br>四路红军总行程约 6.5 万余里。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 01 出发 · 于都 -->
+<section class="scene" id="s1">
+  <div class="tag">1934.10　于都</div>
+  <div class="wrap">
+    
+    <p class="lead reveal d1">1934 年 10 月，<span class="num">8.6 万余</span>人从于都出发。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d3">没有人知道要去哪里。</p>
+    <div class="gap-s"></div>
+    <p class="body reveal d5">当时的文件里，这次行动叫"突围"、叫"转移"、叫"西征"、叫"长途行军与战斗"。</p>
+    <div class="gap-s"></div>
+    <p class="lead red reveal d7">不叫长征。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 02 湘江 ★ -->
+<section class="scene" id="s2">
+  <div class="tag">1934.11　湘江</div>
+  <div class="wrap">
+    <!-- ⚠️ 不写 86,000 / 30,000：原文是「8.6 万余人」「3 万余人」，都是概数。
+         把概数写成精确数，等于自己造了一个原文没有的精确度（铁律：不擅自"改良"权威口径），
+         更要命的是后面遵义屏的 3.7 万余 会看起来像"人数又涨回去了"。 -->
+    <div class="fallWrap">
+      <div class="fall fallA num">8.6 万</div>
+      <div class="fall fallB num red">3 万余</div>
+    </div>
+    <div class="gap-m"></div>
+    <p class="body reveal d6">1934 年 11 月底，湘江。</p>
+    <p class="body reveal d7">过去之后，8.6 万人剩下 3 万余。</p>
+    <p class="body reveal d8">这是他们走的第一道坎，也是最惨的一次。</p>
+    <div class="gap-m"></div>
+    <p class="small reveal d8">原文：「中央红军和中央机关人员从出发时的 8.6 万人锐减至 3 万余人」，人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21。均为概数，非精确统计。<br>这一表述并获中央党史和文献研究院《湘江战役重要研究成果报告》（《解放军报》2026-01-29）确认：「中央红军从出发时的 8.6 万余人到渡过湘江后减为 3 万余人的表述，是符合历史事实的。」</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 03 遵义 · 四渡赤水 -->
+<section class="scene" id="s3">
+  <div class="tag">1935.01　遵义</div>
+  <div class="wrap">
+    <div class="cut reveal">
+      <!-- 一条河 + 一条来回穿过它四次的折线：四个渡口，路不是直的。
+           铅笔素描：河用横向排线表达水面，岸线与路线均作双重描。 -->
+      <svg viewBox="0 0 680 250" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+        <path d="M300 30 q 16 28 0 57 t 0 57 t 0 56 L390 200 q 16 -28 0 -57 t 0 -57 t 0 -56 Z" fill="#EFEADF"></path>
+        <path d="M300 30 q 16 28 0 57 t 0 57 t 0 56 L390 200 q 16 -28 0 -57 t 0 -57 t 0 -56 Z" fill="url(#hatchWater)"></path>
+        <path d="M300 30 q 16 28 0 57 t 0 57 t 0 56" stroke="#3A3733" stroke-width="1.8" opacity=".5"></path>
+        <path d="M302.6 31.4 q 16 28 0 57 t 0 57 t 0 56" stroke="#3A3733" stroke-width="1" opacity=".2"></path>
+        <path d="M390 200 q 16 -28 0 -57 t 0 -57 t 0 -56" stroke="#3A3733" stroke-width="1.8" opacity=".5"></path>
+        <path d="M392.6 198.6 q 16 -28 0 -57 t 0 -57 t 0 -56" stroke="#3A3733" stroke-width="1" opacity=".2"></path>
+        <path d="M120 185 L530 155 L120 115 L530 85 L120 50" stroke="#3A3733" stroke-width="2.6" opacity=".55" stroke-linejoin="round"></path>
+        <path d="M121.4 187.2 L531.4 157.2 L121.4 117.2 L531.4 87.2 L121.4 52.2" stroke="#3A3733" stroke-width="1.5" opacity=".22" stroke-linejoin="round"></path>
+        <path d="M120 185 l 16 -5 -12 -7.5" stroke="#3A3733" stroke-width="2.2" opacity=".5"></path>
+        <g fill="#A32D2D">
+          <circle cx="345" cy="170" r="14"></circle><circle cx="345" cy="135" r="14"></circle>
+          <circle cx="345" cy="100" r="14"></circle><circle cx="345" cy="66" r="14"></circle>
+        </g>
+        <g fill="none" stroke="#3A3733" stroke-width="1.4" opacity=".28">
+          <circle cx="345" cy="170" r="17.6"></circle><circle cx="345" cy="135" r="17.6"></circle>
+          <circle cx="345" cy="100" r="17.6"></circle><circle cx="345" cy="66" r="17.6"></circle>
+        </g>
+        <g fill="#F5F1E8" font-family="PingFang SC,Microsoft YaHei,sans-serif" font-size="19" font-weight="500" text-anchor="middle" dominant-baseline="central">
+          <text x="345" y="170">1</text><text x="345" y="135">2</text>
+          <text x="345" y="100">3</text><text x="345" y="66">4</text>
+        </g>
+      </svg>
+    </div>
+    <div class="gap-m"></div>
+    <p class="lead reveal d1">1935 年 1 月，遵义。队伍剩 <span class="num">3.7 万余</span>人。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d3">接下来的路，不是一条直线。</p>
+    <p class="body reveal d5">赤水河，来回渡了四次。</p>
+    <p class="body reveal d6">走过的路，远长于两点之间的距离。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 04 五月 · 有了名字 ★ -->
+<section class="scene" id="s4">
+  <div class="tag">1935.05</div>
+  <div class="wrap">
+    <p class="big reveal" style="font-size:clamp(34px,10vw,58px)">走了七个月</p>
+    <div class="gap-m"></div>
+    <div class="bugao reveal d3">
+      <div class="ln">红军万里长征，</div>
+      <div class="ln">所向势如破竹。</div>
+    </div>
+    <div class="gap-m"></div>
+    <p class="body reveal d5">1935 年 5 月，一份 <span class="num">156</span> 字的布告上，第一次出现"万里长征"四个字。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d7">在此之前，他们不知道自己走的这段路叫什么。</p>
+    <div class="gap-m"></div>
+    <p class="small reveal d8">朱德以红军总司令名义发布《中国工农红军布告》，现藏解放军档案馆。<br>"长征"二字第一次出现，是四个月前的 1935 年 2 月 23 日。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 05 雪山 · 夹金山 -->
+<section class="scene" id="s5">
+  <div class="tag">1935.06　夹金山</div>
+  <div class="wrap">
+    <div class="cut reveal">
+      <!-- 夹金山：没有人。只有一串向上的脚印，越走越淡；没有一串下山的。
+           铅笔素描：山体用 #hatchSlope 排线出暗面，山脊双重描，棱线断续。 -->
+      <svg viewBox="0 0 680 360" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+        <path d="M0 360 L184 120 L300 250 L424 100 L680 360 Z" fill="url(#hatchSlope)"></path>
+        <path d="M0 360 L184 120 L300 250 L424 100 L680 360 Z" fill="#3A3733" opacity=".03"></path>
+        <path d="M0 360 L184 120 L300 250" stroke="#3A3733" stroke-width="2.8" opacity=".52"></path>
+        <path d="M2.4 358 L186.4 123.2 L301.6 248" stroke="#3A3733" stroke-width="1.6" opacity=".22"></path>
+        <path d="M300 250 L424 100 L680 360" stroke="#3A3733" stroke-width="2.8" opacity=".52"></path>
+        <path d="M302.4 248 L422.6 104.2 L677.6 358" stroke="#3A3733" stroke-width="1.6" opacity=".22"></path>
+        <g stroke="#3A3733" stroke-width="1.5" opacity=".2" stroke-dasharray="17 12">
+          <path d="M184 120 L236 176"></path>
+          <path d="M424 100 L474 154"></path>
+        </g>
+        <g fill="#3A3733">
+          <use href="#foot" xlink:href="#foot" transform="translate(72.9,351.5) rotate(-39)" opacity=".85"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(92.8,323.3) rotate(-39)" opacity=".78"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(124.4,309.2) rotate(-39)" opacity=".68"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(144.3,281) rotate(-39)" opacity=".57"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(175.7,267) rotate(-39)" opacity=".45"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(195.6,238.8) rotate(-39)" opacity=".33"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(227.2,224.7) rotate(-39)" opacity=".2"></use>
+          <use href="#foot" xlink:href="#foot" transform="translate(247.1,196.5) rotate(-39)" opacity=".11"></use>
+        </g>
+      </svg>
+    </div>
+    <div class="gap-m"></div>
+    <p class="lead reveal d1">1935 年 6 月，夹金山。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d3" style="font-style:italic">"只见有人上山走，不见有人下山来。"</p>
+    <p class="small reveal d4">——山下的老乡</p>
+    <div class="gap-m"></div>
+    <p class="body reveal d6">这支队伍里，指挥员平均年龄不足 <span class="num">25</span> 岁，战斗员不足 <span class="num">20</span> 岁。</p>
+    <p class="body reveal d7">14 岁到 18 岁的战士，至少占 <span class="num">40%</span>。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 06 草地 -->
+<section class="scene" id="s6">
+  <div class="tag">1935.08　草地</div>
+  <div class="wrap">
+    <div class="cut reveal">
+      <!-- 草地：一条能走的路，走着走着断了，下面是没有底的黑。
+           与雪山脚印、赤水折线同一套意象语言：铅笔素描 + 一处"缺失" + 一块无边界的墨。
+           画面内不出现人物，也不画地貌分层。
+           ⚠️ 那一块 #1F1D1A 实色是全篇唯一一处纯黑 ——
+              其余三屏只有铅笔灰，代表"有人在纸上记录"；这里是真实的深渊。 -->
+      <svg viewBox="0 0 680 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g stroke="#3A3733" stroke-width="1.6" opacity=".5" fill="none" stroke-linecap="round">
+          <path d="M58 105 q3 -19 6 0 M61.5 105 q3 -13 6 0"></path>
+          <path d="M158 105 q3 -14 6 0 M161.5 105 q3 -21 6 0"></path>
+          <path d="M262 105 q3 -22 6 0 M265.5 105 q3 -13 6 0"></path>
+          <path d="M500 105 q3 -17 6 0 M503.5 105 q3 -11 6 0"></path>
+          <path d="M582 105 q3 -12 6 0 M585.5 105 q3 -18 6 0"></path>
+          <path d="M642 105 q3 -21 6 0"></path>
+        </g>
+        <path d="M0 105 H395" stroke="#3A3733" stroke-width="2.6" opacity=".6"></path>
+        <path d="M0 106.8 H395" stroke="#3A3733" stroke-width="1.2" opacity=".2"></path>
+        <path d="M455 105 H680" stroke="#3A3733" stroke-width="2.6" opacity=".6"></path>
+        <path d="M455 106.8 H680" stroke="#3A3733" stroke-width="1.2" opacity=".2"></path>
+        <path d="M395 105 C406 205 444 212 455 105" stroke="#3A3733" stroke-width="2" opacity=".36" stroke-dasharray="11 9"></path>
+        <path d="M0 150 C 112 147 196 153 296 149 C 404 145 508 152 596 148 C 636 146 660 151 680 149 L680 300 L0 300 Z" fill="#1F1D1A"></path>
+      </svg>
+    </div>
+    <p class="cutcap reveal">1935.08 · 松潘草地</p>
+    <div class="legend reveal d3">
+      <p><i></i>经年水草盘根错节，形成草甸，浮于沼泽之上。</p>
+      <p><i></i>沼泽里没有道路，渺无人烟，危险丛生。</p>
+      <p class="src">—— 人民网党史《解读长征(12)：红军过沼泽草地经历了怎样生死考验？》2016-09-08（来源：央广军事）</p>
+    </div>
+    <div class="gap-m"></div>
+    <p class="lead reveal d1">1935 年 8 月，草地。<span class="num">七天七夜</span>。</p>
+    <div class="gap-m"></div>
+    <p class="body reveal d4">到 9 月整编时，陕甘支队计 <span class="num">1.4 万余</span>人。</p>
+    <div class="gap-s"></div>
+    <p class="small reveal d6">他们不知道，最难的一段已经过去了。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 07 哈达铺：一张旧报纸 -->
+<section class="scene" id="s7">
+  <div class="tag">1935.09　哈达铺</div>
+  <div class="wrap">
+    <!-- ★ 全篇唯一一张「实物」（2026-10-18）
+         铅笔素描，只画报纸的"形" —— SVG 里一个字都不写。
+         内容交给下面 .paper 的引文，并且必须标出处（第 12 条：图管气氛，文管说清）。
+         ⚠️ 合规三条：
+           ① 不写真实报名、不复刻真实版面 —— 避免被误当成史料图片本身；
+           ② 正文一律用 pattern 排线表示，不画字、不画内容；
+           ③ 整版只有一小块是朱红 —— 那就是让他们看见终点的那几条消息。
+         ⚠️ 手法严守第 14 条：双重重描 + pattern 排线 + 断续笔痕（折痕），不用滤镜。 -->
+    <div class="cut reveal">
+      <svg viewBox="0 0 680 430" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <!-- 排线：报纸正文本是规整横线，用 pattern 是对的（第 10 条） -->
+          <pattern id="npBody" width="18" height="14" patternUnits="userSpaceOnUse">
+            <path d="M0 6.8 H12.8" stroke="#3A3733" stroke-width="2.3" opacity=".40"/>
+          </pattern>
+          <pattern id="npTight" width="18" height="12" patternUnits="userSpaceOnUse">
+            <path d="M0 6 H11.2" stroke="#3A3733" stroke-width="2" opacity=".30"/>
+          </pattern>
+          <pattern id="npRed" width="18" height="14" patternUnits="userSpaceOnUse">
+            <path d="M0 6.8 H12.8" stroke="#A32D2D" stroke-width="2.3" opacity=".78"/>
+          </pattern>
+        </defs>
+
+        <!-- 纸张：双重重描 -->
+        <path d="M32 26 L647 21 L655 407 L25 413 Z" fill="#EDE7D9" stroke="#3A3733" stroke-width="3.2" stroke-linejoin="round"/>
+        <path d="M38 32 L641 27 L649 401 L31 407 Z" fill="none" stroke="#3A3733" stroke-width="1.7" opacity=".40"/>
+
+        <!-- 折痕：一张被对折过、又被摊开的旧报纸（断续笔痕） -->
+        <path d="M341 24 L343 409" stroke="#3A3733" stroke-width="2.1" opacity=".42" stroke-dasharray="14 9"/>
+        <path d="M346 25 L348 408" stroke="#3A3733" stroke-width="1.3" opacity=".22"/>
+
+        <!-- 报头：压顶粗线 + 无字刊名块 + 细区隔线 -->
+        <path d="M60 76 L300 74" stroke="#3A3733" stroke-width="5"/>
+        <rect x="60" y="86" width="240" height="34" fill="url(#npTight)"/>
+        <path d="M60 130 L300 129" stroke="#3A3733" stroke-width="2.2" opacity=".55"/>
+
+        <!-- 左栏正文 -->
+        <rect x="60" y="146" width="240" height="118" fill="url(#npBody)"/>
+        <rect x="60" y="278" width="240" height="106" fill="url(#npBody)"/>
+
+        <!-- 右栏 -->
+        <rect x="372" y="76" width="240" height="84" fill="url(#npBody)"/>
+        <rect x="372" y="176" width="240" height="72" fill="url(#npBody)"/>
+        <!-- ★ 就是这一块：整版铅笔灰里唯一的朱红 —— 他们从这里看见终点 -->
+        <rect x="372" y="264" width="240" height="66" fill="url(#npRed)"/>
+        <rect x="372" y="346" width="240" height="38" fill="url(#npBody)"/>
+      </svg>
+    </div>
+    <p class="cutcap reveal">1935.09 · 哈达铺 · 一张旧报纸</p>
+
+    <!-- 上面那块朱红的「放大版」：真实引文。左侧朱红竖线与图中红块呼应。 -->
+    <div class="paper reveal">
+      <div class="ttl">陕北军事形势转变……</div>
+      <div class="ln">全陕北二十三县几无一县不赤化</div>
+      <div class="ln">……赤化人民七十余万……赤军者二万</div>
+    </div>
+    <div class="gap-s"></div>
+    <p class="small reveal d3">以上三段摘自 1935 年 7 月 23 日天津《大公报》，系当时敌对方报纸的原报道口径；节略处以「……」标示，未改字词。</p>
+    <div class="gap-m"></div>
+    <p class="lead reveal d4">1935 年 9 月，甘肃宕昌，哈达铺。</p>
+    <div class="gap-s"></div>
+    <p class="body reveal d6">在一个小小的邮政代办所，他们翻到几张旧报纸。</p>
+    <p class="body reveal d7">上面写着：陕北有红军，有根据地。</p>
+    <div class="gap-m"></div>
+    <p class="lead red reveal d8">出发十一个月了，他们才知道终点在哪。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 08 吴起镇 · 将台堡 -->
+<section class="scene" id="s8">
+  <div class="tag">1935.10 — 1936.10</div>
+  <div class="wrap">
+    <!-- ★ 人数三段：把散在前文的数字收拢成一条看得见的递减链（2026-10-18）
+         ⚠️ 刻意不做图表：没有轴、没有网格、没有色块，只是三行字 + 逐级变小的字号。
+         ⚠️ 也**不做减法**：绝不写"少了 5.6 万" —— 那是从两个有出处的数字
+            推出第三个没有出处的数字（铁律第 4 条），减法是接出来的，不是原文给的。
+            让读者自己看出少了一半以上，比替他算出来更有力。 -->
+    <div class="troops" id="troops">
+      <div class="troop"><span class="num t1">8.6 万</span><i>1934.10　于都出发</i></div>
+      <div class="troop"><span class="num t2">3 万余</span><i>1934.12　湘江之后</i></div>
+      <div class="troop"><span class="num t3 red">7,000 余</span><i>1935.10　到达陕北</i></div>
+    </div>
+    <div class="gap-m"></div>
+    <p class="body reveal d5">1935 年 10 月 19 日，吴起镇。</p>
+    <p class="body reveal d6">陕甘支队（红一、红三军）约 <span class="num">7000 余</span>人。</p>
+    <div class="gap-m"></div>
+    <p class="body reveal d8">1936 年 10 月 22 日，将台堡。会师。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d8">就是今天。</p>
+    <div class="gap-m"></div>
+    <p class="small reveal d8">上列人数均为概数示意，是三个不同时点，不能相互加减：8.6 万与湘江后 3 万余，见人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21；7,000 余见人民网党史《解读长征(10)》2016-09-01，特指陕甘支队到达吴起镇时，不是红一方面军全部，另有 6500 人、不足 8000 人两种口径，见页脚说明。</p>
+    <p class="small reveal d8">还有一处容易被看成"写错了"：第四屏遵义写的是 3.7 万余，比这里的 3 万余多。那是因为它不是同一天 —— 3 万余是过湘江之后（1934 年 12 月初），3.7 万余是遵义会议时（1935 年 1 月）。中间队伍也在往里补人：红军进遵义后十几天，遵义地区就有 4000 余人参军（央视《焦点访谈》2026-10-03）。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 09 俯瞰：第一次看见全长 ★ -->
+<section class="scene" id="s9">
+  <div class="tag">全 长</div>
+  <div class="wrap">
+    <p class="lead reveal">现在，你第一次看到这条路的全长。</p>
+    <div class="scrollWrap reveal d2">
+      <div class="scrollLine"></div>
+      <!-- 里程长卷：只按时间顺序排列节点，不代表精确地理坐标或里程比例。
+           ⚠️ 三条规矩（都踩过坑）：
+             ① 节点不写 top —— 纵向位置由 flex space-between 等分；
+             ② 标签一律「一行排完」—— 折行会压到下一个节点；
+             ③ 一个节点只对应一个时间点 —— 合并写（"赤水 · 金沙江"）会拉长那行文本，
+                且于史实本就是不同时间段的事件，必须分开。
+           ⚠️ 日期一律照抄原文，不开原文不写数字：
+             四渡赤水 1935.1.19 起、5.9 止（人民网党建《不能忘却的战役战斗》）；
+             巧渡金沙江 5.3—5.9；强渡大渡河 5.24—25；飞夺泸定桥 5.29；
+             翻越夹金山 6 月；过草地 8.21 起；哈达铺 9 月；吴起镇 10.19。 -->
+      <div class="scrollMark"><b>1934.10　于都</b></div>
+      <div class="scrollMark" style="background:#E0685F"><b>1934.11　湘江</b></div>
+      <div class="scrollMark"><b>1935.01　遵义</b></div>
+      <div class="scrollMark"><b>1935.01　赤水</b></div>
+      <div class="scrollMark"><b>1935.05　金沙江</b></div>
+      <div class="scrollMark"><b>1935.05　大渡河</b></div>
+      <div class="scrollMark"><b>1935.05　泸定桥</b></div>
+      <div class="scrollMark"><b>1935.06　夹金山</b></div>
+      <div class="scrollMark"><b>1935.08　草地</b></div>
+      <div class="scrollMark" style="background:#E0685F"><b>1935.09　哈达铺</b></div>
+      <div class="scrollMark"><b>1935.10　吴起镇</b></div>
+    </div>
+    <p class="small reveal d4" style="opacity:.6">节点按时间顺序排列，不代表精确里程比例。这不是地图。</p>
+    <div class="gap-m"></div>
+    <div class="reveal d5">
+      <div class="stat"><div class="k num">12,500</div><div class="v">公里。25,000 里。（换算）</div></div>
+      <div class="stat"><div class="k num">31,250</div><div class="v">圈。按 400 米跑道算。（换算）</div></div>
+      <div class="stat"><div class="k num">74</div><div class="v">里。日均行军 74 里。</div></div>
+      <div class="stat"><div class="k num">365</div><div class="v">里。平均走 365 里才能休整一次。</div></div>
+      <div class="stat"><div class="k num red">300</div><div class="v">米。平均每 300 米就有一名红军战士牺牲。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 10 同岁 -->
+<section class="scene" id="s10">
+  <div class="tag">今 天</div>
+  <div class="wrap">
+    <p class="lead reveal">你今年多大？</p>
+    <div class="ageBox reveal d2">
+      <input class="ageInput num" id="ageInput" type="number" inputmode="numeric" min="1" max="100" value="20" aria-label="输入年龄">
+      <span class="ageUnit">岁</span>
+    </div>
+    <div class="ageOut" id="ageOut">
+      <div class="ln" id="ageL1">战斗员的平均年龄不足 20 岁，指挥员的平均年龄不足 25 岁。</div>
+      <div class="ln" id="ageL2">你处在这支队伍最中间的那一段。</div>
+      <div class="who" id="ageWho"></div>
+    </div>
+    <div class="gap-m"></div>
+    <div class="reveal d4">
+      <div class="rankRow"><span>9 位元帅</span><span>36.5 岁</span></div>
+      <div class="rankRow"><span>8 位大将</span><span>31.7 岁</span></div>
+      <div class="rankRow"><span>48 位上将</span><span>25.9 岁</span></div>
+      <div class="rankRow"><span>157 位中将</span><span>23.8 岁</span></div>
+    </div>
+    <p class="small reveal d6" style="margin-top:14px">1955 年首次授衔时，中将以上共 254 人，其中 222 人参加过长征。上表为他们在长征开始时的平均年龄。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 11 他们没有留下脸 -->
+<section class="scene" id="s11">
+  <div class="wrap">
+    <p class="lead reveal">四路红军出发时共 <span class="num">20.6 万余</span>人，<br>途经 14 个省，长征结束时保留 <span class="num">5.7 万余</span>人。</p>
+    <div class="silRow" id="silRow"></div>
+    <p class="small reveal d4" style="margin-top:-4px">从左到右，年龄从小到大。前面七个都是平均数，没有人留下名字；只有最后这一个有 —— 徐特立，出发时 57 岁，是参加长征的红军中最年长的一位（新华社《解码长征丨长征"四老"》2016-08-26；人民网党史《"延安五老"的崇高风范》2020-07-13）。</p>
+    <p class="lead reveal d5">留下姓名的是少数，留下照片的更少。</p>
+    <div class="gap-s"></div>
+    <p class="lead reveal d7">所以这里没有他们的脸——</p>
+    <p class="lead reveal d8">只有他们的年龄，和他们走过的路。</p>
+    <div class="gap-m"></div>
+    <p class="small reveal d8">本作品不使用任何真实人物照片：老照片的著作权保护期按发表时间计算而非拍摄时间；死者肖像受《民法典》第 994 条保护，英雄烈士的姓名、肖像、名誉、荣誉受第 185 条保护；更关键的是，参加长征的二十万余人中，绝大多数普通战士本就没有留下照片。</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 12 落点 ★ -->
+<section class="scene" id="s12">
+  <div class="wrap">
+    <p class="lead reveal">他们出发时，不知道要走两万五千里。</p>
+    <p class="lead reveal d2">他们只知道，今天要把这座山翻过去。</p>
+    <div class="gap-l"></div>
+    <p class="body reveal d4">"长征"这两个字，是走了七个月之后才有的。</p>
+    <p class="body reveal d5">"两万五千里"这个数字，是走到终点那天才算出来的。</p>
+    <p class="body reveal d6">连终点，都是出发十一个月后，从一张旧报纸上看到的。</p>
+    <div class="gap-l"></div>
+
+    <!-- ★ 真实计时：全篇的「传承」机关（2026-10-18）
+         读者打开这一页时不知道要读多久 —— 读完了。
+         他们出发时不知道要走多远   —— 走完了。
+         这是同一件事发生了两次，不用解释成精神口号。
+         ⚠️ 两个数只并列、不换算（铁律第 4 条：不自行乘除造新数字）。
+         ⚠️ HTML 初值必须是「还没测出」（—），否则 JS 没跑时会看到假数字（第 17 条）。 -->
+    <div class="clock reveal d7" id="clockWrap">
+      <div class="clockRow">
+        <span class="clockLab">你读到这里</span>
+        <span class="clockTime" id="clockYou">—</span>
+      </div>
+      <div class="clockRow">
+        <span class="clockLab">他们走完这段路</span>
+        <span class="clockTime">一年</span>
+      </div>
+      <p class="clockNote">你打开这一页时，不知道要读多久。<br>他们出发时，不知道要走多远。</p>
+    </div>
+    <!-- ⚠️ 口径不能串（2026-10-18 已开原文逐字核对，这是一处**已修正的错误**）：
+         本作主线是红一方面军的 25,000 里 = **历时一年**
+           · 国防部《红军长征中的会师》：「红一方面军主力历时1年…行程二万五千里」
+           · 人民网党史《第二十章》：「历时十二个月零九天，共三百六十七天」
+         而「两年零十二天」是**另一条口径** —— 指四支队伍到 1936.10.22 全部会师。
+         既然这里写的是「这段路」（25,000 里），就只能用一年。 -->
+    <p class="small reveal d7">这里说的是红一方面军：1934 年 10 月至 1935 年 10 月，历时一年。若按四支队伍到 1936 年 10 月全部会师计，则为两年零十二天。</p>
+
+    <div class="gap-l"></div>
+    <p class="punch reveal d8">所以你不必等走完，<br>才承认自己在长征。</p>
+    <div class="gap-l"></div>
+    <p class="serif-s reveal d8" style="font-style:italic">"如果要走一万里，我们就走一万里，如果要走二万里，我们就走二万里！"</p>
+    <p class="small reveal d8">——一位 15 岁的红军战士答斯诺，《红星照耀中国》</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ 尾声 · 参考资料 -->
+<section id="refs">
+  <div class="wrap">
+    <h4>参考资料</h4>
+    <div id="refList"><div class="refItem"><i>01</i><span>人民网党史《解读长征(10)：中央红军到达陕北后还剩多少兵力？》　2016-09-01（来源：央广军事）</span></div><div class="refItem"><i>02</i><span>人民网党史《解读长征(12)：红军过沼泽草地经历了怎样生死考验？》　2016-09-08（来源：央广军事）</span></div><div class="refItem"><i>03</i><span>《解放军报》《自古英雄出少年》　人民网党史 2016-10-21 转载</span></div><div class="refItem"><i>04</i><span>新华社《"长征""万里长征""二万五千里长征"最早出现在什么时候？》　人民网党史 2016-08-04</span></div><div class="refItem"><i>05</i><span>《光明日报》《献给人类精神宇宙的壮丽日出》　人民网党史 2016-10-11 转载</span></div><div class="refItem"><i>06</i><span>《光明日报》《红军不怕远征难 长征精神代代传》　2018-10-22，国防部网转载</span></div><div class="refItem"><i>07</i><span>新华社《红军长征全记录：鲜血写就史诗 信念筑成丰碑》　2006-10-20（记者徐壮志）</span></div><div class="refItem"><i>08</i><span>新华社兰州电《从俄界村到榜罗镇：长征落脚点大转折》　2019-08-18（记者王若辰、梁军、王作葵）</span></div><div class="refItem"><i>09</i><span>新华社《解码长征丨长征"四老"》　2016-08-26（记者丁国瑞、郭林雄、郑文浩）</span></div><div class="refItem"><i>10</i><span>中国军网《红军长征的光辉历程和宝贵经验》　2016-10-02</span></div><div class="refItem"><i>11</i><span>中央党史和文献研究院《漫漫长征路究竟有多长》　2016-10-13</span></div><div class="refItem"><i>12</i><span>中央党史和文献研究院《长征途中毛泽东同志在甘肃的三十多个日夜》　2023-12-26</span></div><div class="refItem"><i>13</i><span>人民网《胜利会师将台堡》　（10 月 22 日纪念日的由来）</span></div><div class="refItem"><i>14</i><span>埃德加·斯诺《红星照耀中国》（《西行漫记》）第十篇「红小鬼」</span></div><div class="refItem"><i>15</i><span>新华社北京 1 月 8 日专电《崔永元：〈我的长征〉结束了 我们的长征才刚开始》　2007-01-08（记者周婷玉）</span></div></div>
+
+    <h4>不同口径说明</h4>
+    <div id="altList"><div class="refItem" style="display:block;padding:10px 0"><div style="color:var(--ink-60);font-size:12.5px">到达陕北的人数</div><div style="margin-top:4px">本页采用：陕甘支队到达吴起镇约 7000 余人（本页采用）</div><div style="margin-top:2px">另有口径：人民网理论《长征何以伟大》作 6500 人；国防部转《光明日报》作红一、红三军团不足 8000 人</div></div><div class="refItem" style="display:block;padding:10px 0"><div style="color:var(--ink-60);font-size:12.5px">途经省份数</div><div style="margin-top:4px">本页采用：14 个省（本页采用）</div><div style="margin-top:2px">另有口径：中央党史和文献研究院 2026 年文章按现行行政区划作 15 个省、自治区、直辖市</div></div></div>
+
+    <div class="note" style="white-space: pre-wrap;">本页所有数字均标注来源。如发现史实错漏，请联系更正。
+
+<br><br></div>
+  </div>
+  <div class="sign">Designed by Daka</div>
+</section>
+
+</main>
+
+<script>
+/* ==========================================================================
+   《不知道有多远》· 史料数据层
+   --------------------------------------------------------------------------
+   本文件是全部数字的唯一下游。页面中出现的每一个史实数字，都必须在此
+   登记，并带 src（出处）与 grade（核验等级）。
+
+   核验等级定义（逐条核对记录留在本机，不随成品外发）：
+     A = 已打开原文逐字核对 + 两个独立来源印证
+     B = 已打开原文逐字核对 + 单一权威来源
+     C = 仅见搜索摘要 → 禁止进页面
+     D = 已弃用 → 不得使用
+
+   铁律：
+     1. 官方给了数字就照用，不自行乘除造新数字。
+     2. 口径冲突时只采一条，并在页面上带限定语。
+     3. 本文件不含任何 C / D 级数据。
+   ========================================================================== */
+
+var DATA = {
+
+  /* ------------------------------------------------------------------ 作品 */
+  meta: {
+    title: '不知道有多远',
+    subtitle: '纪念红军长征胜利 90 周年',
+    sign: 'Designed by Daka',
+    node: '2026 年 10 月 22 日 · 长征胜利 90 周年'
+  },
+
+  /* -------------------------------------------------------------- 00 序：距离 */
+  distance: {
+    value: '25,000',
+    unit: '里',
+    src: '新华社《"长征""万里长征""二万五千里长征"最早出现在什么时候？》，人民网党史 2016-08-04',
+    grade: 'A',
+    note: '原文明示："二万五千里长征"这一概念专指红一方面军，不得泛称"红军走了二万五千里"'
+  },
+
+  /* 换算说明：以下两项为纯数学换算（1 里 = 0.5 公里），非史料数字，
+     页面上必须标明"换算"字样，避免被误读为史料。 */
+  conversion: {
+    km: '12,500',           // 25,000 里 = 12,500 公里
+    laps: '31,250',         // 12,500 公里 ÷ 400 米跑道
+    src: '数学换算（1 里 = 0.5 公里；400 米标准跑道）',
+    grade: '换算'
+  },
+
+  /* ------------------------------------------------------------ 01 出发：于都 */
+  departure: {
+    date: '1934 年 10 月',
+    place: '于都',
+    troops: '8.6 万余人',
+    src: '人民网党史《解读长征(10)：中央红军到达陕北后还剩多少兵力？》2016-09-01（来源：央广军事）',
+    grade: 'A',
+    detail: '1934 年 10 月 10 日晚，红军第一方面军 8.6 万余名指战员在江西于都渡河',
+    detailSrc: '中国军网《长征精神是指引我们前进的灯塔》2021-10-18',
+    detailGrade: 'B'
+  },
+
+  /* 出发时的官方称谓 —— 全篇立意的史实底座之一 */
+  namesAtStart: {
+    value: ['突围', '转移', '西征', '长途行军与战斗'],
+    src: '新华社《"长征""万里长征""二万五千里长征"最早出现在什么时候？》，人民网党史 2016-08-04',
+    grade: 'A',
+    note: '出发前后的中革军委命令、指示中，没有出现过"长征"二字'
+  },
+
+  /* ------------------------------------------------------------- 02 湘江 */
+  xiangjiang: {
+    date: '1934 年 11 月底',
+    before: '8.6 万余人',
+    after: '3 万余人',
+    src: '人民网党史《解读长征(10)》2016-09-01（来源：央广军事）',
+    grade: 'A',
+    secondSrc: '《光明日报》《献给人类精神宇宙的壮丽日出》，人民网党史 2016-10-11："湘江一战，中央红军 8.6 万人锐减至 3 万人"',
+    thirdSrc: '中央党史和文献研究院《湘江战役重要研究成果报告》（《解放军报》2026-01-29）："中央红军从出发时的 8.6 万余人到渡过湘江后减为 3 万余人的表述，是符合历史事实的。"',
+    /* ⚠️ 页面一律写"8.6 万 / 3 万余"，不写 86,000 / 30,000。
+       原文是概数，写成精确数＝自己造精确度（违反"不擅自改良权威口径"），
+       而且会让后面遵义屏的 3.7 万余 显得像"人数涨回去了"。 */
+    display: { before: '8.6 万', after: '3 万余' }
+  },
+
+  /* --------------------------------------------------- 03 遵义 · 四渡赤水 */
+  zunyi: {
+    date: '1935 年 1 月',
+    troops: '3.7 万余人',
+    src: '人民网党史《解读长征(10)》2016-09-01（来源：央广军事）',
+    grade: 'A',
+    /* ⚠️ 这个数与湘江之后的"3 万余"不是同一天，容易被读者判为前后矛盾。
+       必须带时点限定：3 万余＝1934.12 初过湘江后；3.7 万余＝1935.1 遵义会议时。
+       期间队伍有补充（央视《焦点访谈》2026-10-03：红军进遵义后十几天，
+       遵义地区 4000 余人参军）—— 只陈述事实，不据此推"涨了多少"。 */
+    note: '遵义会议时的统计，不是湘江之后的那个数；期间遵义地区 4000 余人参军',
+    expandSrc: '央视《焦点访谈》《新征程 新长征 独立自主 步履弥坚》2026-10-03',
+    expandGrade: 'B'
+  },
+
+  /* ----------------------------------------------------- 04 五月：有了名字 */
+  naming: {
+    steps: [
+      {
+        when: '走了 4 个月',
+        date: '1935 年 2 月 23 日',
+        what: '"长征"两个字第一次出现',
+        doc: '红军总政治部《告黔北工农劳苦群众书》'
+      },
+      {
+        when: '走了 7 个月',
+        date: '1935 年 5 月',
+        what: '第一次出现"万里长征"',
+        doc: '朱德以红军总司令名义发布《中国工农红军布告》："红军万里长征，所向势如破竹"'
+      },
+      {
+        when: '1935 年 8 月 4—6 日',
+        date: '沙窝会议',
+        what: '"一方面军一万八千里的长征"',
+        doc: '会议决议'
+      },
+      {
+        when: '走到终点那天',
+        date: '1935 年 10 月 19 日',
+        what: '第一次明确提出"二万五千里长征"',
+        doc: '依据红 1 军团团部汇总，"最多的走了二万五千里"'
+      }
+    ],
+    src: '新华社《"长征""万里长征""二万五千里长征"最早出现在什么时候？》，人民网党史 2016-08-04',
+    grade: 'A',
+    note: '⚠️ 1935 年 8 月那次是沙窝会议，不是毛儿盖会议（2026-10-11 曾记错，已据原文更正）',
+    bugao: {
+      text: '红军万里长征，所向势如破竹',
+      chars: 156,
+      src: '《中国工农红军布告》，现藏解放军档案馆（新华社）',
+      grade: 'A'
+    }
+  },
+
+  /* --------------------------------------------------------- 05 雪山：夹金山 */
+  jiajinshan: {
+    date: '1935 年 6 月',
+    quote: '只见有人上山走，不见有人下山来',
+    quoteSrc: '《光明日报》《红军不怕远征难 长征精神代代传》2018-10-22，国防部网转载',
+    quoteGrade: 'B',
+    note: '海拔不做数值——无权威精确出处，避免失实'
+  },
+
+  /* ------------------------------------------------------------- 06 草地 */
+  grassland: {
+    date: '1935 年 8 月',
+    days: '七天七夜',
+    troops: '1.4 万余人',
+    troopsNote: '到 9 月整编时，陕甘支队计 1.4 万余人',
+    src: '人民网党史《解读长征(10)》2016-09-01（据《彭德怀自述》）',
+    grade: 'A',
+    daySrc: '中央党史和文献研究院官网《长征途中毛泽东同志在甘肃的三十多个日夜》2023-12-26',
+    dayGrade: 'B',
+
+    /* 剖面图配文 —— 两句均为原文，2026-10-14 开原文逐字核对 */
+    terrain: {
+      lines: [
+        '经年水草盘根错节，形成草甸，浮于沼泽之上。',
+        '沼泽里没有道路，渺无人烟，危险丛生。'
+      ],
+      src: '人民网党史《解读长征(12)：红军过沼泽草地经历了怎样生死考验？》2016-09-08（来源：央广军事）',
+      grade: 'B',
+      note: '⚠️ 2026-10-14 撤回两句：「到处都是深不可测的泥潭」未见于该篇原文；'
+          + '「积水淤黑，浅处没膝，深处没顶」出自人民网天津频道报告文学《如歌的岁月》，'
+          + '属文学作品，不作史料引用'
+    }
+  },
+
+  /* ------------------------------------------------- 07 哈达铺：一张旧报纸 */
+  hadapu: {
+    date: '1935 年 9 月',
+    place: '甘肃宕昌 · 哈达铺',
+    find: '从邮政代办所收集到多份《大公报》和国民党地方报纸',
+    decide1: '9 月 22 日，中央红军团以上干部会议在哈达铺召开——到陕甘革命根据地去',
+    decide2: '9 月 27 日，榜罗镇会议正式决定将长征落脚点放在陕甘',
+    before: '9 月 12 日俄界会议的决定是：到靠近苏联的中国边境地区',
+    src: '新华社兰州 8 月 18 日电《从俄界村到榜罗镇：长征落脚点大转折》2019-08-18（记者王若辰、梁军、王作葵）',
+    grade: 'A',
+    secondSrc: '中央党史和文献研究院官网《长征途中毛泽东同志在甘肃的三十多个日夜》2023-12-26',
+    monthCount: '11 个月',
+    monthNote: '1934 年 10 月出发，1935 年 9 月才知道终点在哪'
+  },
+
+  /* -------------------------------------------------- 08 吴起镇 · 将台堡 */
+  arrival: {
+    wuqi: {
+      date: '1935 年 10 月 19 日',
+      place: '吴起镇',
+      troops: '约 7000 余人',
+      note: '陕甘支队（红一、红三军）到达吴起镇时',
+      src: '人民网党史《解读长征(10)》2016-09-01（来源：央广军事）',
+      grade: 'A'
+    },
+    jiangtaipu: {
+      date: '1936 年 10 月 22 日',
+      place: '将台堡',
+      what: '红二方面军与红一方面军会师——长征最后一次会师',
+      src: '人民网《胜利会师将台堡》',
+      grade: 'B',
+      note: '1986 年纪念长征胜利 50 周年起，纪念日由 10 月 10 日改定在 10 月 22 日'
+    }
+  },
+
+  /* ------------------------------------------------------- 09 俯瞰：看见全长 */
+  overview: {
+    troopsTotal: {
+      start: '20.6 万余人',
+      reinforce: '1.7 万余人',
+      end: '5.7 万余人',
+      note: '四路红军出发时',
+      src: '新华社《红军长征全记录》2006-10-20（记者徐壮志）；中国军网《红军长征的光辉历程和宝贵经验》2016-10-02',
+      grade: 'A'
+    },
+    march: {
+      daily: '74 里',
+      rest: '365 里',
+      text: '日均行军 74 里，平均走 365 里才能休整一次',
+      extra: '235 天白天行军，17 天夜行军',
+      src: '《光明日报》《献给人类精神宇宙的壮丽日出》，人民网党史 2016-10-11',
+      grade: 'A'
+    },
+    sacrifice: {
+      text: '平均每 300 米就有一名红军战士牺牲',
+      src: '中国军网、人民网党史、《光明日报》三家口径一致',
+      grade: 'A',
+      note: '⚠️ 照用官方表述，不得改写，也不得据此自行推算牺牲总数'
+    },
+    battles: {
+      text: '同敌人进行了 600 余次战役战斗',
+      src: '《光明日报》《红军不怕远征难 长征精神代代传》2018-10-22，国防部网转载',
+      grade: 'B'
+    },
+    allRoutes: {
+      text: '红一、二、四方面军和红二十五军共经过 14 个省份，总行程 6.5 万余里',
+      src: '《光明日报》《献给人类精神宇宙的壮丽日出》，人民网党史 2016-10-11；中央党史和文献研究院官网《漫漫长征路究竟有多长》2016-10-13',
+      grade: 'A'
+    }
+  },
+
+  /* -------------------------------------------------------------- 10 同岁 */
+  ages: {
+    commander: '不足 25 岁',
+    fighter: '不足 20 岁',
+    ratio: '至少 40%',
+    ratioText: '14 岁至 18 岁的战士至少占 40%',
+    red25: '平均年龄不过 20 岁，多数战斗员 13—18 岁，人称"娃娃军团"',
+    src: '《解放军报》《自古英雄出少年》，人民网党史 2016-10-21 转载',
+    grade: 'A',
+    ranks: [
+      { rank: '9 位元帅',   age: '36.5 岁' },
+      { rank: '8 位大将',   age: '31.7 岁' },
+      { rank: '48 位上将',  age: '25.9 岁' },
+      { rank: '157 位中将', age: '23.8 岁' }
+    ],
+    ranksNote: '1955 年首次授衔时，中将以上共 254 人，其中 222 人参加过长征。上表为他们在长征开始时的平均年龄',
+    ranksSrc: '《解放军报》《自古英雄出少年》，人民网党史 2016-10-21 转载',
+    ranksGrade: 'A'
+  },
+
+  /* 真人年龄样本 —— 全部来自新华社《解码长征丨长征"四老"》2016-08-26（A 级）。
+     原则：查得实才放，查不到就不放。以下四人全部有原文出处。 */
+  people: [
+    { name: '徐特立', born: '1877 年', age: 57, note: '长征出发时 57 岁，是参加长征的红军中最年长的一位',
+      src: '新华社《解码长征丨长征"四老"》2016-08-26；人民网党史《"延安五老"的崇高风范》2020-07-13', grade: 'A' },
+    { name: '谢觉哉', born: '1884 年', age: 50, note: '1934 年参加长征时 50 岁，随中华苏维埃共和国临时中央政府转移',
+      src: '新华社《解码长征丨长征"四老"》2016-08-26', grade: 'A' },
+    { name: '林伯渠', born: '1886 年', age: 48, note: '1934 年参加长征时 48 岁，任中革军委总供给部部长',
+      src: '新华社《解码长征丨长征"四老"》2016-08-26', grade: 'A' },
+    { name: '董必武', born: '1886 年', age: 48, note: '1934 年参加长征时 48 岁，任中央工作团团长',
+      src: '新华社《解码长征丨长征"四老"》2016-08-26', grade: 'A' }
+  ],
+
+  /* 15 岁红小鬼答斯诺 —— 落点前的人物化表达 */
+  redKid: {
+    age: '15 岁',
+    text: '不苦，不苦。有同志们和你在一起，行军是不苦的。我们革命青年不能想到事情是不是困难或辛苦；我们只能想到我们面前的任务。如果要走一万里，我们就走一万里，如果要走二万里，我们就走二万里！',
+    src: '埃德加·斯诺《红星照耀中国》（《西行漫记》）第十篇「战争与和平」·「红小鬼」',
+    grade: 'B'
+  },
+
+  /* ------------------------------------------------------- 11 没有留下脸 */
+  noFaces: {
+    text: '四路红军出发时共 20.6 万余人，途经 14 个省，长征结束时保留 5.7 万余人。',
+    src: '新华社《红军长征全记录》2006-10-20；中国军网《红军长征的光辉历程和宝贵经验》2016-10-02',
+    grade: 'A',
+    reason: '留下姓名的是少数，留下照片的更少。所以这里没有他们的脸——只有他们的年龄，和他们走过的路。'
+  },
+
+  /* --------------------------------------------------------- 12 落点：你的长征 */
+  ending: {
+    lines: [
+      '他们出发时，不知道要走两万五千里。',
+      '他们只知道，今天要把这座山翻过去。'
+    ],
+    evidence: [
+      '"长征"这两个字，是走了七个月之后才有的。',
+      '"两万五千里"这个数字，是走到终点那天才算出来的。'
+    ],
+    punch: '所以你不必等走完，才承认自己在长征。',
+    backup: '没有人想到，这一走，就是两万五千里。',
+    backupSrc: '《光明日报》《献给人类精神宇宙的壮丽日出》，人民网党史 2016-10-11',
+    backupGrade: 'B'
+  },
+
+  /* -------------------------------------------------------- 尾声：参考资料 */
+  refs: [
+    { t: '人民网党史《解读长征(10)：中央红军到达陕北后还剩多少兵力？》', d: '2016-09-01（来源：央广军事）' },
+    { t: '人民网党史《解读长征(12)：红军过沼泽草地经历了怎样生死考验？》', d: '2016-09-08（来源：央广军事）' },
+    { t: '《解放军报》《自古英雄出少年》', d: '人民网党史 2016-10-21 转载' },
+    { t: '新华社《"长征""万里长征""二万五千里长征"最早出现在什么时候？》', d: '人民网党史 2016-08-04' },
+    { t: '《光明日报》《献给人类精神宇宙的壮丽日出》', d: '人民网党史 2016-10-11 转载' },
+    { t: '《光明日报》《红军不怕远征难 长征精神代代传》', d: '2018-10-22，国防部网转载' },
+    { t: '新华社《红军长征全记录：鲜血写就史诗 信念筑成丰碑》', d: '2006-10-20（记者徐壮志）' },
+    { t: '新华社兰州电《从俄界村到榜罗镇：长征落脚点大转折》', d: '2019-08-18（记者王若辰、梁军、王作葵）' },
+    { t: '新华社《解码长征丨长征"四老"》', d: '2016-08-26（记者丁国瑞、郭林雄、郑文浩）' },
+    { t: '中国军网《红军长征的光辉历程和宝贵经验》', d: '2016-10-02' },
+    { t: '中央党史和文献研究院《漫漫长征路究竟有多长》', d: '2016-10-13' },
+    { t: '中央党史和文献研究院《长征途中毛泽东同志在甘肃的三十多个日夜》', d: '2023-12-26' },
+    { t: '人民网《胜利会师将台堡》', d: '（10 月 22 日纪念日的由来）' },
+    { t: '埃德加·斯诺《红星照耀中国》（《西行漫记》）第十篇「红小鬼」', d: '' },
+    { t: '新华社北京 1 月 8 日专电《崔永元：〈我的长征〉结束了 我们的长征才刚开始》', d: '2007-01-08（记者周婷玉）' }
+  ],
+
+  /* 不同口径说明 —— 不隐瞒，写在页脚 */
+  altCalibers: [
+    { item: '到达陕北的人数', a: '陕甘支队到达吴起镇约 7000 余人（本页采用）',
+      b: '人民网理论《长征何以伟大》作 6500 人；国防部转《光明日报》作红一、红三军团不足 8000 人' },
+    { item: '途经省份数', a: '14 个省（本页采用）',
+      b: '中央党史和文献研究院 2026 年文章按现行行政区划作 15 个省、自治区、直辖市' }
+  ],
+
+  footerNote: '本页所有数字均标注来源。如发现史实错漏，请联系更正。'
+};
+
+/* 年岁匹配逻辑 —— 只匹配权威统计口径与可查实的真人年龄，不虚构任何一个具体的人 */
+function matchAge(age) {
+  var out = {
+    age: age,
+    lines: [],
+    person: null,
+    src: DATA.ages.src
+  };
+
+  if (age <= 13) {
+    out.lines.push('长征时，红二十五军多数战斗员的年龄是 13 岁到 18 岁。');
+    out.lines.push('这支队伍被人称作"娃娃军团"。');
+  } else if (age <= 18) {
+    out.lines.push('长征时，14 岁到 18 岁的战士至少占 40%。');
+    out.lines.push('你和他们同岁。');
+  } else if (age <= 24) {
+    out.lines.push('战斗员的平均年龄不足 20 岁，指挥员的平均年龄不足 25 岁。');
+    out.lines.push('你处在这支队伍最中间的那一段。');
+  } else if (age <= 34) {
+    out.lines.push('指挥员的平均年龄不足 25 岁。');
+    out.lines.push('你比这支队伍的大多数指挥员年长。');
+  } else if (age <= 40) {
+    out.lines.push('1955 年首次授衔时统计：参加过长征的 9 位元帅，出发时平均 36.5 岁。');
+    out.lines.push('157 位中将，出发时平均 23.8 岁。');
+  } else if (age <= 56) {
+    out.lines.push('长征队伍里也有和你差不多的人。');
+  } else {
+    out.lines.push('这支队伍里最年长的一位出发时是 57 岁。');
+    out.lines.push('年龄没有挡住他走完两万五千里。');
+  }
+
+  /* 匹配最接近的可查实真人（只用于"队伍里有和你差不多的人"这一句） */
+  if (age >= 45) {
+    var best = null, bestGap = 999;
+    for (var i = 0; i < DATA.people.length; i++) {
+      var gap = Math.abs(DATA.people[i].age - age);
+      if (gap < bestGap) { bestGap = gap; best = DATA.people[i]; }
+    }
+    out.person = best;
+  }
+
+  return out;
+}
+
+</script>
+<script>
+/* ==========================================================================
+   《不知道有多远》· 场景构件
+   负责生成：版画剪影、参考资料列表、不同口径说明
+   ========================================================================== */
+
+/* 一个行军剪影：戴八角帽、背背包、拄拐杖。
+   刻意不画面孔、不画五官、不画任何可辨识特征 —— 历史上他们本就没有留下脸。
+   fill：群体用铅笔灰 #3A3733，唯一留下姓名的那一位用墨黑 #1F1D1A（明度分层叙事）。 */
+function silSvg(scale, opacity, rot, fill) {
+  var s = scale || 1, o = opacity || 0.82, r = rot || 0, f = fill || '#3A3733';
+  return '<svg viewBox="0 0 48 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" ' +
+    'style="opacity:' + o + ';transform:rotate(' + r + 'deg) scale(' + s + ');transform-origin:50% 100%">' +
+    '<g fill="' + f + '">' +
+    '<circle cx="24" cy="10" r="6.6"/>' +
+    '<path d="M15.5 6.5 h17 l-1.5 -4.5 h-14 z"/>' +
+    '<path d="M14 6.5 h20 v3 H14 z"/>' +
+    '<path d="M17 17 h14 l2.5 21 H14.5 z"/>' +
+    '<path d="M7 20.5 h9.5 v13 H7 z"/>' +
+    '<path d="M31.5 19 h4 l-1 13 h-4 z"/>' +
+    '<path d="M18 38 h6 l-1.5 32 h-5.5 z"/>' +
+    '<path d="M25.5 38 h6 l2.5 32 h-6 z"/>' +
+    '<path d="M36 21 h2.2 l-3 50 h-2.4 z"/>' +
+    '</g></svg>';
+}
+
+/* 第 11 屏：一排剪影。
+   ⚠️ 设计纪律：每个剪影下方标注的是【真实的群体统计口径或可查实的真人】，
+   绝不标注虚构的个体年龄 —— 公开渠道没有普通红军战士的生年名录。
+
+   ★ 2026-10-18 重排（大卡反馈「上面的小人跟下面的文字对不上」）：
+     ① 按年龄从小到大排 —— 原来是乱序，读者找不到规律；
+     ② 前七个用铅笔灰、最后一个用墨黑 —— 用「明度」而不是「坐标轴」区分，
+        这样既把唯一的真人突出来，又不违反「不做图表」的定位（无轴、无网格、无刻度）；
+     ③ 最后一个加 .one：左侧留白 + 一道铅笔虚线分隔 —— 提示它和前面不是同一类。 */
+var SILHOUETTES = [
+  { label: '13—18 岁',  sub: '红二十五军',  scale: 0.88, op: 0.74, rot: -1 },
+  { label: '14—18 岁',  sub: '占 40%',      scale: 0.92, op: 0.78, rot: 0 },
+  { label: '不足 20 岁', sub: '战斗员平均',  scale: 0.96, op: 0.80, rot: 1 },
+  { label: '23.8 岁',   sub: '157 位中将',  scale: 1.00, op: 0.82, rot: 0.5 },
+  { label: '不足 25 岁', sub: '指挥员平均',  scale: 1.00, op: 0.82, rot: -0.5 },
+  { label: '25.9 岁',   sub: '48 位上将',   scale: 1.02, op: 0.84, rot: 1.5 },
+  { label: '36.5 岁',   sub: '9 位元帅',    scale: 1.04, op: 0.86, rot: -1 },
+  { label: '57 岁',     sub: '徐特立',      scale: 1.14, op: 1.00, rot: 0, one: true }
+];
+
+function buildSilhouettes() {
+  var box = document.getElementById('silRow');
+  if (!box) return;
+  var html = '';
+  for (var i = 0; i < SILHOUETTES.length; i++) {
+    var p = SILHOUETTES[i];
+    html += '<div class="sil' + (p.one ? ' one' : '') + '">' +
+      silSvg(p.scale, p.op, p.rot, p.one ? '#1F1D1A' : '#3A3733') +
+      '<b>' + p.label + '</b>' +
+      '<b style="font-size:11px;opacity:.7">' + p.sub + '</b>' +
+      '</div>';
+  }
+  box.innerHTML = html;
+}
+
+/* 页脚参考资料 */
+function buildRefs() {
+  var box = document.getElementById('refList');
+  if (!box) return;
+  var html = '';
+  for (var i = 0; i < DATA.refs.length; i++) {
+    var r = DATA.refs[i];
+    html += '<div class="refItem"><i>' + pad(i + 1) + '</i><span>' + r.t +
+      (r.d ? '　' + r.d : '') + '</span></div>';
+  }
+  box.innerHTML = html;
+
+  var alt = document.getElementById('altList');
+  if (!alt) return;
+  var h = '';
+  for (var j = 0; j < DATA.altCalibers.length; j++) {
+    var a = DATA.altCalibers[j];
+    h += '<div class="refItem" style="display:block;padding:10px 0">' +
+      '<div style="color:var(--ink-60);font-size:12.5px">' + a.item + '</div>' +
+      '<div style="margin-top:4px">本页采用：' + a.a + '</div>' +
+      '<div style="margin-top:2px">另有口径：' + a.b + '</div></div>';
+  }
+  alt.innerHTML = h;
+}
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+/* 首屏与尾屏的文案由 DATA 注入，保证页面与数据层同源 */
+function injectText() {
+  var t = document.title;
+  if (DATA.meta && DATA.meta.title) {
+    document.title = DATA.meta.title + ' · ' + DATA.meta.subtitle;
+  }
+}
+
+/* readyState 可能是 loading / interactive / complete 三种之一。
+   只在 loading 时才等 DOMContentLoaded，否则直接执行 —— 避免脚本被
+   延迟注入（如动态插入、缓存恢复）时构件永远不生成。 */
+function initScenes() {
+  buildSilhouettes();
+  buildRefs();
+  injectText();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initScenes);
+} else {
+  initScenes();
+}
+
+</script>
+<script>
+/* ==========================================================================
+   《不知道有多远》· 主逻辑
+   滚动驱动分幕 / 右侧刻度（第一遍不给看终点）/ 视角拉升 / 同岁匹配
+   ========================================================================== */
+
+(function () {
+  'use strict';
+
+  var TOTAL_LI = 25000;           // 红一方面军行程（DATA.distance）
+  var $ = function (id) { return document.getElementById(id); };
+  var T_OPEN = Date.now();        // ★ 页面打开时刻：真实计时的起点（见落点计时）
+
+  /* ------------------------------------------------------------ 开场遮罩 */
+  var intro = $('intro');
+  var introGone = false;
+
+  // ★ 重载时必须从头讲：标题屏是一次性的（gone 之后就不再回来），
+  //   而浏览器默认会「记住上次的滚动位置」，恢复时还会补发一次 scroll 事件——
+  //   那一记会瞬间抹掉标题，故事一打开就直接停在结尾的 25,000 里上。
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (window.pageYOffset > 0) window.scrollTo(0, 0);
+
+  function dismissIntro() {
+    if (introGone || !intro) return;
+    // 只有真的滚动起来才算「开始向上看」，避免上面那记归位滚动误伤标题
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    if (y < 8) return;
+    introGone = true;
+    intro.classList.add('gone');
+  }
+  window.addEventListener('scroll', dismissIntro, { passive: true });
+  window.addEventListener('touchmove', dismissIntro, { passive: true });
+  window.addEventListener('wheel', dismissIntro, { passive: true });
+  if (intro) {
+    intro.addEventListener('click', function () {
+      introGone = true;
+      intro.classList.add('gone');   // 点一下也能进，不受上面 y<8 的限制
+    });
+  }
+
+  /* -------------------------------------------------- 分幕进入（逐屏揭示） */
+  var scenes = document.querySelectorAll('.scene');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var e = entries[i];
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('in');
+        var rs = e.target.querySelectorAll('.reveal');
+        for (var j = 0; j < rs.length; j++) rs[j].classList.add('in');
+      }
+    }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+    for (var k = 0; k < scenes.length; k++) io.observe(scenes[k]);
+  } else {
+    // 兜底：不支持时直接全部显示，保证内容可读
+    for (var m = 0; m < scenes.length; m++) {
+      scenes[m].classList.add('in');
+      var rr = scenes[m].querySelectorAll('.reveal');
+      for (var n = 0; n < rr.length; n++) rr[n].classList.add('in');
+    }
+  }
+
+  /* -------------------------------------------------------- 右侧刻度 ★关键
+     只显示"已走了多少里"。
+     · 不显示总长
+     · 不显示还剩多少
+     · 不显示终点在哪
+     走到第 09 屏才揭晓全长 —— "不给看"本身就是主题。
+     说明：里数按页面进度在 s1—s8 之间线性映射，是叙事进度，
+     与真实里程逐段对应关系无关，故不做逐段标注。 */
+  var gauge = $('gauge');
+  var gaugeNum = $('gaugeNum');
+  var gaugeFill = $('gaugeFill');
+  var s1 = $('s1'), s8 = $('s8'), s9 = $('s9');
+  var ticking = false;
+
+  function updateGauge() {
+    ticking = false;
+    if (!gauge || !s1 || !s8) return;
+
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    var start = s1.offsetTop;
+    var end = s8.offsetTop + s8.offsetHeight;
+    var span = end - start;
+    var p = span > 0 ? (y - start) / span : 0;
+    if (p < 0) p = 0;
+    if (p > 1) p = 1;
+
+    var li = Math.round(p * TOTAL_LI);
+    if (gaugeNum) gaugeNum.textContent = li.toLocaleString('en-US');
+    if (gaugeFill) gaugeFill.style.height = (p * 100).toFixed(2) + '%';
+
+    // 出了第 00 屏才出现，进了第 09 屏（深色）就转浅色
+    gauge.classList.toggle('on', y > s1.offsetTop * 0.45);
+    if (s9) {
+      var r9 = s9.getBoundingClientRect();
+      var inDark = r9.top < window.innerHeight * 0.5 && r9.bottom > window.innerHeight * 0.5;
+      gauge.classList.toggle('dark', inDark);
+    }
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateGauge);
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+
+  /* ------------------------------------------------------------ 同岁模块 */
+  var ageInput = $('ageInput');
+  var ageL1 = $('ageL1'), ageL2 = $('ageL2'), ageWho = $('ageWho');
+
+  function renderAge(animate) {
+    if (!ageInput || !ageL1) return;
+    var v = parseInt(ageInput.value, 10);
+    if (isNaN(v) || v < 1) v = 1;
+    if (v > 100) v = 100;
+
+    var r = matchAge(v);
+    ageL1.textContent = r.lines[0] || '';
+    ageL2.textContent = r.lines[1] || '';
+
+    if (r.person) {
+      ageWho.textContent = r.person.name + '，' + r.person.born + '生，参加长征时 ' +
+        r.person.age + ' 岁。' + r.person.note + '（' + r.person.src.split('；')[0] + '）';
+    } else {
+      ageWho.textContent = '';
+    }
+
+    if (animate) {
+      ageL1.classList.remove('show');
+      ageL2.classList.remove('show');
+      // 强制重排以重启动画
+      void ageL1.offsetWidth;
+      setTimeout(function () { ageL1.classList.add('show'); }, 60);
+      setTimeout(function () { ageL2.classList.add('show'); }, 260);
+    } else {
+      ageL1.classList.add('show');
+      ageL2.classList.add('show');
+    }
+  }
+
+  if (ageInput) {
+    var timer = null;
+    ageInput.addEventListener('input', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { renderAge(true); }, 220);
+    });
+    ageInput.addEventListener('blur', function () { renderAge(true); });
+    // 进入第 10 屏时先渲染一次
+    if ('IntersectionObserver' in window) {
+      var ioAge = new IntersectionObserver(function (es) {
+        for (var i = 0; i < es.length; i++) {
+          if (es[i].isIntersecting) { renderAge(true); break; }
+        }
+      }, { threshold: 0.4 });
+      var s10 = $('s10');
+      if (s10) ioAge.observe(s10);
+    }
+  }
+
+  /* ------------------------------------------------------ 落点真实计时 ★★
+     全篇的「传承」机关（2026-10-18）：
+       你打开这一页时，不知道要读多久 —— 你读完了。
+       他们出发时，不知道要走多远   —— 他们走完了。
+     这是同一件事发生了两次，所以落点不用再写成"精神在传承"这类口号。
+
+     ⚠️ 三条纪律：
+       ① 只并列、不换算 —— 绝不拿阅读耗时去算出第三个数字（铁律第 4 条）；
+       ② 到这一屏才取值 —— 一开始就算的话，滚得快的读者永远看不到真实数；
+       ③ HTML 初值写的是「—」，JS 没跑时读者也不会看到一个假数字（第 17 条）。 */
+  var clockYou = $('clockYou');
+  var clockShown = false;
+
+  function showClock() {
+    if (clockShown || !clockYou) return;
+    clockShown = true;
+    var s = Math.max(1, Math.round((Date.now() - T_OPEN) / 1000));
+    var m = Math.floor(s / 60);
+    clockYou.textContent = m > 0 ? (m + ' 分 ' + (s % 60) + ' 秒') : (s + ' 秒');
+  }
+
+  var s12 = $('s12');
+  if (s12 && 'IntersectionObserver' in window) {
+    var ioClock = new IntersectionObserver(function (es) {
+      for (var i = 0; i < es.length; i++) {
+        if (es[i].isIntersecting) showClock();
+      }
+    }, { threshold: 0.4 });
+    ioClock.observe(s12);
+  } else if (s12) {
+    // 兜底：不支持 IO 时退化为按位置判断，内容不能缺
+    window.addEventListener('scroll', function () {
+      if (s12.getBoundingClientRect().top < window.innerHeight * 0.75) showClock();
+    }, { passive: true });
+  }
+
+  /* --------------------------------------------------------------- 初始化 */
+  updateGauge();
+  renderAge(false);
+})();
+
+</script>
+
+
+</body></html>
