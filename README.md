@@ -54,4 +54,4 @@
 
 Designed by Daka
 
-源码仓（私有）：`daka-agent/longmarch-src`　·　第 39 件作品 · dakazhang.com
+第 39 件作品 · dakazhang.com
