@@ -175,12 +175,22 @@ body::before{
   font-family:var(--serif);font-size:15px;letter-spacing:.5em;color:var(--ink-40);
 }
 
-/* ------------------------------------------- 02 湘江 / 08 吴起：数字坠落 */
-.fallWrap{position:relative;height:1.24em;overflow:hidden}
+/* ------------------------------------------- 02 湘江 / 08 吴起：数字坠落
+   ⚠️ 2026-10-18 踩过一个大坑：height 用 em 定，而 font-size 写在子元素上，
+      .fallWrap 的 em 就退回继承值 16px —— 高度只剩 19.8px，
+      50–100px 的数字被 overflow 裁成一条缝，页面上只剩两个笔尖。
+      → **用 em 定的尺寸，必须由同一个元素的 font-size 驱动。**
+      现在字号放在 .fallWrap 上，子元素 inherit，两边永远是同一个值。 */
+.fallWrap{
+  position:relative;
+  font-size:clamp(50px,16vw,100px);   /* ← 这一行是 height:1.24em 的分母，不能挪走 */
+  height:1.24em;
+  overflow:hidden;
+}
 .fallA,.fallB{
   position:absolute;left:0;
   font-family:var(--serif);
-  font-size:clamp(50px,16vw,100px);
+  font-size:inherit;
   font-weight:700;line-height:1.22;
   font-variant-numeric:tabular-nums;
   letter-spacing:.02em;
