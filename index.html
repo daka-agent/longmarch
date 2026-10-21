@@ -118,6 +118,44 @@ body::before{
 }
 
 .small{font-size:12.5px;line-height:1.95;color:var(--ink-40);letter-spacing:.04em}
+
+/* ------------------------------------------------ 折叠出处（2026-10-22）
+   大卡在手机上扫了一遍：注释小字太多，占满屏幕。
+   → 纯出处/核验说明默认收起，点开才出现；内容性质的那几条保持可见（不折）。
+
+   两条硬要求：
+     ① 用原生 <details>，【不依赖 JS】——
+        万一浏览器不支持 details，它会退化成"内容直接全部显示"，
+        降级方向正好是我们要的（出处一个不少），不会变成"永远看不到出处"。
+     ② 触发器写「出处」不写「注释」——
+        "注释"像是解释词句，"出处"才说明这是史料来源；
+        而这一行小触发器本身就在告诉读者"这里有东西可查"，
+        比整块摊开更强化「把出处摊开」这个立点。 */
+.srcbox{
+  margin-top:12px;
+  padding-top:2px;
+}
+.srcbox summary{
+  cursor:pointer;
+  list-style:none;
+  display:flex;align-items:center;justify-content:flex-start;gap:7px;
+  min-height:34px;                 /* 手机上要好点，别做成一行细线 */
+  font-family:var(--sans);
+  font-size:12px;letter-spacing:.14em;
+  color:rgba(31,29,26,.55);   /* 比正文注释深一点：它是要被点的，太淡在手机上找不着 */
+  -webkit-tap-highlight-color:transparent;
+  transition:opacity .2s ease;
+}
+.srcbox summary::-webkit-details-marker{display:none}
+.srcbox summary::after{
+  content:'\203A';                 /* › */
+  font-size:16px;line-height:1;margin-top:-1px;
+  transition:transform .25s cubic-bezier(.22,.61,.36,1);
+}
+.srcbox[open] summary::after{transform:rotate(90deg)}
+.srcbox summary:active{opacity:.5}
+.srcbox .small{margin-top:2px}
+.srcbox .small + .small{margin-top:8px}
 .serif-s{font-family:var(--serif);font-size:14px;color:var(--ink-40);letter-spacing:.08em}
 
 .red{color:var(--red)}
@@ -608,7 +646,9 @@ body::before{
     <p class="lead reveal d4">你大概听过这个数字很多次。</p>
     <p class="lead reveal d6">但你不一定知道它有多长。</p>
     <div class="gap-m"></div>
-    <p class="small reveal d8">注："二万五千里长征"专指红一方面军。<br>四路红军总行程约 6.5 万余里。</p>
+    <details class="srcbox reveal d8"><summary>出处</summary>
+      <p class="small">注："二万五千里长征"专指红一方面军。<br>四路红军总行程约 6.5 万余里。</p>
+    </details>
   </div>
 </section>
 
@@ -643,7 +683,10 @@ body::before{
     <p class="body reveal d7">过去之后，8.6 万人剩下 3 万余。</p>
     <p class="body reveal d8">这是他们走的第一道坎，也是最惨的一次。</p>
     <div class="gap-m"></div>
-    <p class="small reveal d8">原文：「中央红军和中央机关人员从出发时的 8.6 万人锐减至 3 万余人」，人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21。均为概数，非精确统计。<br>这一表述并获中央党史和文献研究院《湘江战役重要研究成果报告》（《解放军报》2026-01-29）确认：「中央红军从出发时的 8.6 万余人到渡过湘江后减为 3 万余人的表述，是符合历史事实的。」</p>
+    <details class="srcbox reveal d8"><summary>出处 · 2 条</summary>
+      <p class="small">原文：「中央红军和中央机关人员从出发时的 8.6 万人锐减至 3 万余人」，人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21。均为概数，非精确统计。</p>
+      <p class="small">这一表述并获中央党史和文献研究院《湘江战役重要研究成果报告》（《解放军报》2026-01-29）确认：「中央红军从出发时的 8.6 万余人到渡过湘江后减为 3 万余人的表述，是符合历史事实的。」</p>
+    </details>
   </div>
 </section>
 
@@ -702,7 +745,9 @@ body::before{
     <div class="gap-s"></div>
     <p class="lead reveal d7">在此之前，他们不知道自己走的这段路叫什么。</p>
     <div class="gap-m"></div>
-    <p class="small reveal d8">朱德以红军总司令名义发布《中国工农红军布告》，现藏解放军档案馆。<br>"长征"二字第一次出现，是四个月前的 1935 年 2 月 23 日。</p>
+    <details class="srcbox reveal d8"><summary>出处</summary>
+      <p class="small">朱德以红军总司令名义发布《中国工农红军布告》，现藏解放军档案馆。<br>"长征"二字第一次出现，是四个月前的 1935 年 2 月 23 日。</p>
+    </details>
   </div>
 </section>
 
@@ -850,7 +895,9 @@ body::before{
       <div class="ln">……赤化人民七十余万……赤军者二万</div>
     </div>
     <div class="gap-s"></div>
-    <p class="small reveal d3">以上三段摘自 1935 年 7 月 23 日天津《大公报》，系当时敌对方报纸的原报道口径；节略处以「……」标示，未改字词。</p>
+    <details class="srcbox reveal d3"><summary>出处</summary>
+      <p class="small">以上三段摘自 1935 年 7 月 23 日天津《大公报》，系当时敌对方报纸的原报道口径；节略处以「……」标示，未改字词。</p>
+    </details>
     <div class="gap-m"></div>
     <p class="lead reveal d4">1935 年 9 月，甘肃宕昌，哈达铺。</p>
     <div class="gap-s"></div>
@@ -883,8 +930,15 @@ body::before{
     <div class="gap-s"></div>
     <p class="lead reveal d8">就是今天。</p>
     <div class="gap-m"></div>
-    <p class="small reveal d8">上列人数均为概数示意，是三个不同时点，不能相互加减：8.6 万与湘江后 3 万余，见人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21；7,000 余见人民网党史《解读长征(10)》2016-09-01，特指陕甘支队到达吴起镇时，不是红一方面军全部，另有 6500 人、不足 8000 人两种口径，见页脚说明。</p>
-    <p class="small reveal d8">还有一处容易被看成"写错了"：第四屏遵义写的是 3.7 万余，比这里的 3 万余多。那是因为它不是同一天 —— 3 万余是过湘江之后（1934 年 12 月初），3.7 万余是遵义会议时（1935 年 1 月）。中间队伍也在往里补人：红军进遵义后十几天，遵义地区就有 4000 余人参军（央视《焦点访谈》2026-10-03）。</p>
+    <!-- ⚠️ 第二条不折：它是"防误读"用的 —— 读者看到第 4 屏的 3.7 万余 比这里的 3 万余 多，
+         一定会当成写错了。把问题直接写在 summary 上：即使不点开，读者也已经知道"不是写错了"。
+         （把整段留着反而更占屏；留一行问题，比留一整段解释更有效。） -->
+    <details class="srcbox reveal d8"><summary>出处 · 三个数字的口径</summary>
+      <p class="small">上列人数均为概数示意，是三个不同时点，不能相互加减：8.6 万与湘江后 3 万余，见人民网党史《理想信念谱史诗 钢铁意志铸丰碑》2016-10-21；7,000 余见人民网党史《解读长征(10)》2016-09-01，特指陕甘支队到达吴起镇时，不是红一方面军全部，另有 6500 人、不足 8000 人两种口径，见页脚说明。</p>
+    </details>
+    <details class="srcbox reveal d8"><summary>为什么第 4 屏又写 3.7 万余？</summary>
+      <p class="small">那是因为它不是同一天 —— 3 万余是过湘江之后（1934 年 12 月初），3.7 万余是遵义会议时（1935 年 1 月）。中间队伍也在往里补人：红军进遵义后十几天，遵义地区就有 4000 余人参军（央视《焦点访谈》2026-10-03）。</p>
+    </details>
   </div>
 </section>
 
@@ -950,7 +1004,9 @@ body::before{
       <div class="rankRow"><span>48 位上将</span><span>25.9 岁</span></div>
       <div class="rankRow"><span>157 位中将</span><span>23.8 岁</span></div>
     </div>
-    <p class="small reveal d6" style="margin-top:14px">1955 年首次授衔时，中将以上共 254 人，其中 222 人参加过长征。上表为他们在长征开始时的平均年龄。</p>
+    <details class="srcbox reveal d6"><summary>出处</summary>
+      <p class="small">1955 年首次授衔时，中将以上共 254 人，其中 222 人参加过长征。上表为他们在长征开始时的平均年龄。</p>
+    </details>
   </div>
 </section>
 
@@ -959,13 +1015,16 @@ body::before{
   <div class="wrap">
     <p class="lead reveal">四路红军出发时共 <span class="num">20.6 万余</span>人，<br>途经 14 个省，长征结束时保留 <span class="num">5.7 万余</span>人。</p>
     <div class="silRow" id="silRow"></div>
-    <p class="small reveal d4" style="margin-top:-4px">从左到右，年龄从小到大。前面七个都是平均数，没有人留下名字；只有最后这一个有 —— 徐特立，出发时 57 岁，是参加长征的红军中最年长的一位（新华社《解码长征丨长征"四老"》2016-08-26；人民网党史《"延安五老"的崇高风范》2020-07-13）。</p>
+    <p class="small reveal d4" style="margin-top:-4px">从左到右，年龄从小到大。前面七个都是平均数，没有人留下名字；只有最后这一个有 —— 徐特立，出发时 57 岁。</p>
     <p class="lead reveal d5">留下姓名的是少数，留下照片的更少。</p>
     <div class="gap-s"></div>
     <p class="lead reveal d7">所以这里没有他们的脸——</p>
     <p class="lead reveal d8">只有他们的年龄，和他们走过的路。</p>
     <div class="gap-m"></div>
-    <p class="small reveal d8">本作品不使用任何真实人物照片：老照片的著作权保护期按发表时间计算而非拍摄时间；死者肖像受《民法典》第 994 条保护，英雄烈士的姓名、肖像、名誉、荣誉受第 185 条保护；更关键的是，参加长征的二十万余人中，绝大多数普通战士本就没有留下照片。</p>
+    <details class="srcbox reveal d8"><summary>出处 · 2 条</summary>
+      <p class="small">徐特立 1877 年生，出发时 57 岁，是参加长征的红军中最年长的一位：新华社《解码长征丨长征"四老"》2016-08-26；人民网党史《"延安五老"的崇高风范》2020-07-13。</p>
+      <p class="small">本作品不使用任何真实人物照片：老照片的著作权保护期按发表时间计算而非拍摄时间；死者肖像受《民法典》第 994 条保护，英雄烈士的姓名、肖像、名誉、荣誉受第 185 条保护；更关键的是，参加长征的二十万余人中，绝大多数普通战士本就没有留下照片。</p>
+    </details>
   </div>
 </section>
 
